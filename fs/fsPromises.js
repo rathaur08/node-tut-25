@@ -1,36 +1,79 @@
-const fs = require('fs/promises');
-const path = require('path');
+const fs = require("fs/promises");
+const path = require("path");
 
 const fileName = "fsPromises.txt";
-const filepath = path.join(__dirname, fileName);
+const filePath = path.join(__dirname, fileName);
 
+// Why .then() and .catch()?
+//? .then() ensures clear chaining of multiple asynchronous operations.
+//? .catch() centralizes error handling, making it easy to debug and manage failures.
+//*-------------------------------------------------------------------------------------*
 
-// syntext: fs.writeFile(path, data, options, callback)----
-//  file data created anf .txt file :----
-const writeFile = fs.writeFile(filepath, "This is the initial Data", "utf-8",)
-  .then(console.log("File created succesfully!"))
-  .catch((err) => console.error(err));
+// const filePath1 = __dirname;
 
-// file data read ------------------------
-// const readFile = fs.readFile(filepath, "utf-8",)
-//   .then((data) => console.log("File has been Readed -: ", data))
-//   .catch((err) => console.error(err));
-
-
-// update code -----------------------
-// const appendFile = fs.appendFile(filepath, "\nThis is the initial Data Updated", "utf-8",)
-//   .then(console.log("File has been Updeted"))
-//   .catch((err) => console.error(err));
-
-// Delete code -----------------------
-
-// const deleteFile = fs.unlink(filepath)
-//   .then(console.log("File has been Deleted"))
-//   .catch((err) => console.error(err));
-
-// check Folder Files Path ----------------
-
-// const folderFilesPath = __dirname
-// const pathFile = fs.readdir(folderFilesPath)
+// fs.promises
+//   .readdir(filePath1)
 //   .then((data) => console.log(data))
-//   .catch((err) => console.error(err));
+//   .catch((err) => console.log(err));
+
+//*-------------------------------------------------------------------------------------*
+//* Create (Write a File):fs.promises.writeFile
+//* Creates or overwrites a file with specified content.
+//* The writeFile() method writes data to a file asynchronously.
+//* If the file does not exist, it is created.
+//* If it exists, its content is replaced.
+
+//! syntax: fs.promises.writeFile(path, data, options).then().catch();
+//? path: Path to the file.
+//? data: Content to write.
+//? options: Encoding ('utf8'), flags, etc. (optional).
+//*-------------------------------------------------------------------------------------*
+
+fs.writeFile(filePath, "this is the initial data", "utf-8")
+  .then(console.log("File created successfully!"))
+  .catch((err) => console.log(err));
+
+//*-------------------------------------------------------------------------------------*
+//* Read (Read a File): readFile()
+//* The readFile() method reads data from a file.
+//* It can return the data as a Buffer or string based on the encoding provided.
+
+//! syntax: fs.promises.readFile(path, options).then(data => ...).catch(err => ...);
+//? path: Path to the file.
+//? options: Encoding ('utf8') or no encoding for binary data.
+//*-------------------------------------------------------------------------------------*
+
+// fs.promises
+//   .readFile(filePath, "utf-8")
+//   .then((data) => console.log(data))
+//   .catch((err) => console.error("Error reading file:", err));
+
+//*-------------------------------------------------------------------------------------*
+//* Update (Append Content to a File): appendFile()
+//* Adds content to the end of a file.
+//* The appendFile() method adds content without overwriting the existing data.
+
+//! syntax: fs.promises.appendFile(path, data, options).then().catch();
+//? path: Path to the file.
+//? data: Content to append.
+//? options: Encoding ('utf8') or no encoding for binary data.
+//*-------------------------------------------------------------------------------------*
+
+// fs.promises
+//   .appendFile(filePath, "\nthis is the updated data", "utf-8")
+//   .then(console.log("File updated successfully!"))
+//   .catch((err) => console.log(err));
+
+//*-------------------------------------------------------------------------------------*
+//* Delete (Remove a File): unlink()
+//* Deletes a file from the filesystem.
+//* The unlink() method removes the specified file asynchronously.
+
+//! syntax: fs.promises.unlink(path).then().catch();
+//? path: Path to the file.
+//*-------------------------------------------------------------------------------------*
+
+// fs.promises
+//   .unlink(filePath)
+//   .then(console.log("File Deleted successfully!"))
+//   .catch((err) => console.error("Error deleting file:", err));
