@@ -1,46 +1,59 @@
-const fs = require('fs');
-const path = require('path');
+//todo Time for Asynchronous
+
+const fs = require("fs");
+const path = require("path");
 
 const fileName = "fsAsycn.txt";
-const filepath = path.join(__dirname, fileName);
+const filePath = path.join(__dirname, fileName);
+//*-------------------------------------------------------------------------------------*
+//* fs.writeFile(): Writes data to a file, replacing the file if it already exists.
+//! syntax: fs.writeFile(path, data, options, callback);
 
+//? path: File path to write to.
+//? data: Content to write.
+//? options: Optional. Specifies encoding ('utf8'), mode, or flag.
+//? callback: A function with an err parameter.
+//*-------------------------------------------------------------------------------------*
 
-// syntext: fs.writeFile(path, data, options, callback)----
-//  file data creata anf .txt file :----
-// const writeFile = fs.writeFile(
-//   filepath, "This is the initial Data", "utf-8",
-//   (err) => {
-//     if (err) console.error(err);
-//     else console.log("File has been Created & Saved");
-//   }
-// );
-// console.log(writeFile);
+// fs.writeFile(filePath, "This is the initial Data", "utf-8", (err) => {
+//   if (err) console.error(err);
+//   else console.log("File has been Saved");
+// });
 
+//*-------------------------------------------------------------------------------------*
+//* fs.readFile(): Reads the contents of a file asynchronously and returns the data as a buffer or string.
+//! syntax: fs.readFile(path, options, callback);
 
-// file data read ------------------------
+//? path: File path to read from.
+//? options: Optional. An object or string specifying the encoding ('utf8') or flag ('r' for reading).
+//? callback: A function with parameters (err, data).
+//*-------------------------------------------------------------------------------------*
+// fs.readFile(filePath, (err, data) => {
+//   if (err) console.error(err);
+//   else console.log(data.toString());
+// });
 
-// const readFile = fs.readFile(filepath, "utf-8",
-//   (err, data) => {
-//     if (err) console.error(err);
-//     else console.log("File has been Readed -: ", data);
-//   });
-// console.log(readFile.toString());
-// console.log(readFile);
+// fs.readFile(filePath, "utf-8", (err, data) => {
+//   if (err) console.error(err);
+//   else console.log(data);
+// });
 
-// update code -----------------------
+//*-------------------------------------------------------------------------------------*
+//* fs.appendFile(): Appends data to a file. If the file doesn’t exist, it is created.
+//! syntax: fs.appendFile(path, data, options, callback);
 
-// const appendFile = fs.appendFile(
-//   filepath, "\nThis is the initial Data", "utf-8",
-//   (err, data) => {
-//     if (err) console.error(err);
-//     else console.log("File has been Updated -: ", data);
-//   });
-// console.log(appendFile);
+//*-------------------------------------------------------------------------------------*
+// fs.appendFile(filePath, "\nThis is the Updated Data", "utf-8", (err) => {
+//   if (err) console.error(err);
+//   else console.log("File has been Updated");
+// });
 
-// Delete code -----------------------
-// const deleteFile = fs.unlink(filepath,
-//   (err) => {
-//     if (err) console.error(err);
-//     else console.log("File has been Deleted");
-//   });
-// console.log(deleteFile);
+//*-------------------------------------------------------------------------------------*
+//* fs.unlink(): Deletes a file asynchronously.
+//! syntax: fs.unlink(path, callback);
+
+//*-------------------------------------------------------------------------------------*
+// fs.unlink(filePath, (err) => {
+//   if (err) console.error(err);
+//   else console.log("File has been Deleted");
+// });
