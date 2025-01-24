@@ -1,3 +1,5 @@
 
 /node_modules
 express/node_modules
+
+.env
