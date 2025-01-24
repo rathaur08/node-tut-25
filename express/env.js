@@ -7,13 +7,13 @@
 // 2
 import { ZodError, z } from "zod";
 
-const ageSchema = z.number().min(18).max(100).int();
+// const ageSchema = z.number().min(18).max(100).int();
 
-const userAge = 50;
+// const userAge = 50;
 
-// 2.1
-const parseUserAge = ageSchema.parse(userAge);
-console.log(parseUserAge);
+// // 2.1
+// const parseUserAge = ageSchema.parse(userAge);
+// console.log(parseUserAge);
 
 // 2.2
 // const { data, error, success } = ageSchema.safeParse(userAge);
@@ -30,3 +30,7 @@ console.log(parseUserAge);
 //     console.log("Unexpected error", error)
 //   }
 // }
+
+const portSchema = z.coerce.number().min(1).max(8000).default(3000);
+
+export const PORT = portSchema.parse(process.env.PORT);
