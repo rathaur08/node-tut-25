@@ -4,11 +4,14 @@ import path from "path";
 
 const app = express();
 
+const staticPath = path.join(import.meta.dirname, "public");
+app.use("/public", express.static(staticPath));
+
 app.get("/", (req, res) => {
-  
+
   const homePagePath = path.join(import.meta.dirname, "public", "index.html");
   res.sendFile(homePagePath);
-  
+
 });
 
 app.get("/about", (req, res) => res.send("About Helllo World!"));
