@@ -16,6 +16,12 @@ app.get("/", (req, res) => {
 
 app.get("/about", (req, res) => res.send("About Helllo World!"));
 
+app.get("/product", (req, res) => {
+  console.log(req.query)
+  res.send(` Product Name is -: ${req.query.search}, and Limit -: ${req.query.limit}`)
+  // Example URL Added Multi Parameters (http://localhost:3000/product?search=iphone16&limit=15)
+});
+
 app.get("/profile/:username", (req, res) => {
   console.log(req.params)
   res.send(` Profile Name is : ${req.params.username}`)
