@@ -4,14 +4,27 @@ import path from "path";
 
 const app = express();
 
+// Handle Form Submission Code
 const staticPath = path.join(import.meta.dirname, "public");
-app.use("/public", express.static(staticPath));
+app.use(express.static(staticPath));
+
+app.use(express.urlencoded({ extended: true }));
+
+// app.get("/contact", (req, res) => {
+//   console.log(req.query)
+//   res.redirect("/")
+//   // res.send(` contact page is -: ${req.query.name}, and Massage -: ${req.query.message}`)
+// });
+
+app.post("/contact", (req, res) => {
+  console.log(req.body)
+  res.redirect("/")
+  // res.send(` contact page is -: ${req.query.name}, and Massage -: ${req.query.message}`)
+});
 
 app.get("/", (req, res) => {
-
   const homePagePath = path.join(import.meta.dirname, "public", "index.html");
   res.sendFile(homePagePath);
-
 });
 
 app.get("/about", (req, res) => res.send("About Helllo World!"));

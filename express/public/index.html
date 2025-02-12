@@ -10,6 +10,20 @@
 <body>
   <h1>Node.js</h1>
   <p>Node.js Code File</p>
+
+  <h2>HTML Forms</h2>
+  <form action="/contact" method="post">
+    <label for="fname"> name:</label><br>
+    <input type="text" id="name" name="name" value=""><br>
+    <label for="lname">message:</label><br>
+    <input type="text" id="message" name="message" value=""><br><br>
+    <hr />
+    <label for="fname"> name:</label><br>
+    <input type="text" id="name" name="user[name]" value=""><br>
+    <label for="lname">message:</label><br>
+    <input type="text" id="message" name="user[message]" value=""><br><br>
+    <button>Submit</button>
+  </form>
 </body>
 
 </html>
