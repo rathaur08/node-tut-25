@@ -1,15 +1,16 @@
 import express from "express";
 import { PORT } from "./env.js";
 import path from "path";
-import {shortRoutes} from "./routes/short.routes.js"
+import { shortRoutes } from "./routes/short.routes.js"
 
 const app = express();
 
 // Handle Form Submission Code
 const staticPath = path.join(import.meta.dirname, "public");
 app.use(express.static(staticPath));
-
 app.use(express.urlencoded({ extended: true }));
+
+app.set("view engine", "ejs");
 
 // express router
 app.use(shortRoutes);

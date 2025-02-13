@@ -21,7 +21,16 @@ router.post("/contact", (req, res) => {
   // res.send(` contact page is -: ${req.query.name}, and Massage -: ${req.query.message}`)
 });
 
-router.get("/about", (req, res) => res.send("About Helllo World!"));
+router.get("/about", (req, res) => res.send("About Page!"));
+
+router.get("/report", (req, res) => {
+  const student = {
+    name: "sunny",
+    grade: "10th",
+    favSubject: "Maths"
+  }
+  return res.render("report", { student })
+});
 
 router.get("/product", (req, res) => {
   console.log(req.query)

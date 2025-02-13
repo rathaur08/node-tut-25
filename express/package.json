@@ -11,6 +11,7 @@
   "author": "rathaur08",
   "license": "ISC",
   "dependencies": {
+    "ejs": "^3.1.10",
     "express": "^5.0.0",
     "zod": "^3.24.1"
   }
