@@ -46,6 +46,16 @@ app.get("/profile/:username/artical/:slug", (req, res) => {
   res.send(` Profile Name is : ${req.params.username} artical is ${req.params.slug}`);
 });
 
+// 404 Page Not Found
+app.use((req, res) => {
+  // return res.status(404).send("<h1>404 Error <br/> Page Not Found!</h1>")
+
+  // 2 Method Code File Path -----------
+  return res
+    .status(404)
+    .sendFile(path.join(import.meta.dirname, "views", "404.html"))
+});
+
 // const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running at PORT: ${PORT}`);
