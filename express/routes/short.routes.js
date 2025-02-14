@@ -1,6 +1,7 @@
 import { readFile, writeFile } from "fs/promises"
 import path from "path";
 import { Router } from "express";
+import { reportCont } from "../controllers/report.controller.js"
 
 const router = Router();
 
@@ -23,15 +24,19 @@ router.post("/contact", (req, res) => {
 
 router.get("/about", (req, res) => res.send("About Page!"));
 
-router.get("/report", (req, res) => {
-  const student = [
-    { name: "sunny", grade: "10th", favSubject: "Maths" },
-    { name: "Rahul", grade: "9th", favSubject: "Hindi" },
-    { name: "Amit", grade: "11th", favSubject: "English" },
-    { name: "harsh", grade: "12th", favSubject: "Physis" }
-  ]
-  return res.render("report", { student })
-});
+// added report File code to controllers files
+// Add controllers Code 
+router.get("/report", reportCont);
+
+// router.get("/report", (req, res) => {
+//   const student = [
+//     { name: "sunny", grade: "10th", favSubject: "Maths" },
+//     { name: "Rahul", grade: "9th", favSubject: "Hindi" },
+//     { name: "Amit", grade: "11th", favSubject: "English" },
+//     { name: "harsh", grade: "12th", favSubject: "Physis" }
+//   ]
+//   return res.render("report", { student })
+// });
 
 router.get("/product", (req, res) => {
   console.log(req.query)
