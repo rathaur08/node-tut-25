@@ -1,45 +1,17 @@
-import path from "path";
 import { Router } from "express";
 import { getHome, getContact, reportCont } from "../controllers/report.controller.js"
 
 const router = Router();
 
-// router.get("/", (req, res) => {
-//   const homePagePath = path.join(import.meta.dirname, "public", "index.html");
-//   res.sendFile(homePagePath);
-// });
-
 router.get("/", getHome);
 
-// app.get("/contact", (req, res) => {
-//   console.log(req.query)
-//   res.redirect("/")
-//   // res.send(` contact page is -: ${req.query.name}, and Massage -: ${req.query.message}`)
-// });
-
 router.post("/contact", getContact);
-
-// router.post("/contact", (req, res) => {
-//   console.log(req.body)
-//   res.redirect("/")
-//   // res.send(` contact page is -: ${req.query.name}, and Massage -: ${req.query.message}`)
-// });
 
 router.get("/about", (req, res) => res.send("About Page!"));
 
 // added report File code to controllers files
 // Add controllers Code 
 router.get("/report", reportCont);
-
-// router.get("/report", (req, res) => {
-//   const student = [
-//     { name: "sunny", grade: "10th", favSubject: "Maths" },
-//     { name: "Rahul", grade: "9th", favSubject: "Hindi" },
-//     { name: "Amit", grade: "11th", favSubject: "English" },
-//     { name: "harsh", grade: "12th", favSubject: "Physis" }
-//   ]
-//   return res.render("report", { student })
-// });
 
 router.get("/product", (req, res) => {
   console.log(req.query)

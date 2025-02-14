@@ -13,11 +13,6 @@ export const getContact = (req, res) => {
 };
 
 export const reportCont = (req, res) => {
-  // const student = [
-  //   { name: "sunny", grade: "10th", favSubject: "Maths" },
-  //   { name: "Rahul", grade: "9th", favSubject: "Hindi" },
-  //   { name: "Amit", grade: "11th", favSubject: "English" },
-  //   { name: "harsh", grade: "12th", favSubject: "Physis" }
-  // ]
+  // student data get from models
   return res.render("report", { student })
 };
