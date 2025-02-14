@@ -1,0 +1,4 @@
+code => to copy Data
+As you can see, there is aroutes folder, which will serve as controllers.
+Then there is a models folder, in which we have a user model.
+A views folder, which have our views with an extension of .handlebars. Be noted that handlebars is a templating engine which means that it has the ability to generate the pages by filling in the templating that we create.
