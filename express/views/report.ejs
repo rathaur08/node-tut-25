@@ -5,25 +5,37 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Report Page ejs File</title>
+  <style>
+    body {
+      margin: 0px;
+      padding: 0px;
+    }
+  </style>
 </head>
 
 <body>
-  <h1>Student Report Page File</h1>
-  <div style="display: flex;">
-    <% student.map((data)=>{ %>
-      <div>
-        <p>
-          Name : <%= data.name %>
-        </p>
-        <p>
-          Grade : <%= data.grade %>
-        </p>
-        <p>
-          Fav Subject : <%= data.favSubject %>
-        </p>
-      </div>
-      <% }) %>
-  </div>
+  <!-- added Navbar using ejs File -->
+  <%- include("navbar") %>
+
+    <h1 style="text-align: center;">Student Report Page File</h1>
+    <div style="display: flex; justify-content: center;">
+      <% student.map((data)=>{ %>
+        <div style="border: 1px solid black; margin: 5px; padding: 5px;">
+          <p>
+            Name : <%= data.name %>
+          </p>
+          <p>
+            Grade : <%= data.grade %>
+          </p>
+          <p>
+            Fav Subject : <%= data.favSubject %>
+          </p>
+        </div>
+        <% }) %>
+    </div>
+
+    <!-- added Footer using ejs File -->
+    <%- include("Footer") %>
 </body>
 
 </html>
