@@ -11,7 +11,19 @@ const readableStream = createReadStream(inoutFilePath, {
 
 const writableStream = createWriteStream(outputFilePath);
 
-readableStream.pipe(writableStream);
+// listen for data chunks
+readableStream.on("data", (chunk) => {
+  console.log("Buffer (chunk):", Buffer.from(chunk))
+  console.log("Received Chunk:", chunk);
+  writableStream.write(chunk);
+})
+
+// handle stream end
+
+readableStream.on("end", () => {
+  console.log("File read Completed.")
+  writableStream.end()
+})
 
 readableStream.on("error", (err) => console.error("Error", err))
 writableStream.on("error", (err) => console.error("Error", err))
