@@ -54,7 +54,12 @@ async function insertUsers() {
 async function getUsers() {
   try {
     const users = await User.find();
-    console.log("Users retrieved successfully", users);
+    // console.log("Users retrieved successfully", users);
+
+    // Get one Data 
+    const findOneData = await User.findOne({ name: "Sunny" })
+    console.log("Users retrieved successfully", findOneData);
+
   } catch (error) {
     console.error("Error retrieving users", error);
   }
