@@ -1,10 +1,43 @@
-import { MongoClient } from "mongodb";
+import mongoose from "mongoose";
 
-const client = new MongoClient("url-local");
+const username = "sunnyrathaur2444";
+const password = "nodetut25";
+const dbName = "nodetut";
 
-await client.connect();
+const connectionString = `mongodb+srv://${username}:${password}@cluster0.qygyy.mongodb.net/${dbName}?retryWrites=true&w=majority&appName=Cluster0`;
 
-const db = client.db("mongodb_nodejs_db");
-const userCollection = db.collection("users");
+async function connectDB() {
+  try {
+    await mongoose.connect(connectionString, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
+    console.log("Database connected successfully");
+  } catch (error) {
+    console.error("Database connection failed", error);
+    process.exit(1);
+  }
+}
 
-userCollection.insertOne({ name: "sunny", age: "24" })
+const userSchema = new mongoose.Schema({
+  name: String,
+  age: Number
+});
+
+const User = mongoose.model("User", userSchema);
+
+async function insertUser() {
+  try {
+    const newUser = new User({ name: "Rahul", age: 22 });
+    await newUser.save();
+    console.log("User inserted successfully");
+  } catch (error) {
+    console.error("Error inserting user", error);
+  }
+}
+
+(async () => {
+  await connectDB();
+  await insertUser();
+  mongoose.connection.close();
+})();
