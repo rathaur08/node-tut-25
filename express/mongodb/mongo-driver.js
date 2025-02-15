@@ -29,7 +29,7 @@ const User = mongoose.model("User", userSchema);
 // insert User One Code 
 async function insertUser() {
   try {
-    const newUser = new User({ name: "Rahul", age: 22 });
+    const newUser = new User({ name: "Abhi", age: 55 });
     await newUser.save();
     console.log("User inserted successfully");
   } catch (error) {
@@ -51,10 +51,19 @@ async function insertUsers() {
   }
 }
 
+async function getUsers() {
+  try {
+    const users = await User.find();
+    console.log("Users retrieved successfully", users);
+  } catch (error) {
+    console.error("Error retrieving users", error);
+  }
+}
 
 (async () => {
   await connectDB();
   // await insertUser();
-  await insertUsers();
+  // await insertUsers();
+  await getUsers();
   mongoose.connection.close();
 })();
