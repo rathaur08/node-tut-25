@@ -65,10 +65,30 @@ async function getUsers() {
   }
 }
 
+async function updateUser(name, newAge) {
+  try {
+    const updatedOneUser = await User.updateOne(
+      { name: name },
+      { $set: { age: newAge } }
+    );
+    console.log("User updated successfully", updatedOneUser);
+
+    // const updatedUser = await User.findOneAndUpdate(
+    //   { name: name },
+    //   { age: newAge },
+    //   { new: true }
+    // );
+    // console.log("User updated successfully", updatedUser);
+  } catch (error) {
+    console.error("Error updating user", error);
+  }
+}
+
 (async () => {
   await connectDB();
   // await insertUser();
   // await insertUsers();
-  await getUsers();
+  // await getUsers();
+  await updateUser("Sunny", 99);
   mongoose.connection.close();
 })();
