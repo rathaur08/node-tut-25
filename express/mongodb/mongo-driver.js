@@ -84,11 +84,24 @@ async function updateUser(name, newAge) {
   }
 }
 
+async function deleteUser(name) {
+  try {
+    // const deletedUser = await User.deleteOne({ name: name });
+    // console.log("User deleted successfully", deletedUser);
+
+    const deletedManyUser = await User.deleteMany({ name: name });
+    console.log("User deleted successfully", deletedManyUser);
+  } catch (error) {
+    console.error("Error deleting user", error);
+  }
+}
+
 (async () => {
   await connectDB();
   // await insertUser();
   // await insertUsers();
   // await getUsers();
-  await updateUser("Sunny", 99);
+  // await updateUser("Sunny", 99);
+  await deleteUser("Abhi");
   mongoose.connection.close();
 })();
