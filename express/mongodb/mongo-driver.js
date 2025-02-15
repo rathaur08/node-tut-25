@@ -26,6 +26,7 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model("User", userSchema);
 
+// insert User One Code 
 async function insertUser() {
   try {
     const newUser = new User({ name: "Rahul", age: 22 });
@@ -36,8 +37,24 @@ async function insertUser() {
   }
 }
 
+// insert User Many Code 
+async function insertUsers() {
+  try {
+    const users = [
+      { name: "Ravi", age: 20 },
+      { name: "Harsh", age: 27 }
+    ];
+    await User.insertMany(users);
+    console.log("Users inserted successfully");
+  } catch (error) {
+    console.error("Error inserting users", error);
+  }
+}
+
+
 (async () => {
   await connectDB();
-  await insertUser();
+  // await insertUser();
+  await insertUsers();
   mongoose.connection.close();
 })();
