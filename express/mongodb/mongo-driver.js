@@ -20,16 +20,19 @@ async function connectDB() {
 }
 
 const userSchema = new mongoose.Schema({
-  name: String,
-  age: Number
+  name: { type: String, required: true },
+  age: { type: Number, required: true, min: 10 },
+  email: { type: String, required: true, unique: true },
+  createdAt: { type: Date, default: Date.now } // Corrected default value
 });
+
 
 const User = mongoose.model("User", userSchema);
 
 // insert User One Code 
 async function insertUser() {
   try {
-    const newUser = new User({ name: "Abhi", age: 55 });
+    const newUser = new User({ name: "Sunny", age: 23, email: "sunny@gmail.com" });
     await newUser.save();
     console.log("User inserted successfully");
   } catch (error) {
@@ -98,10 +101,10 @@ async function deleteUser(name) {
 
 (async () => {
   await connectDB();
-  // await insertUser();
+  await insertUser();
   // await insertUsers();
   // await getUsers();
   // await updateUser("Sunny", 99);
-  await deleteUser("Abhi");
+  // await deleteUser("Abhi");
   mongoose.connection.close();
 })();
