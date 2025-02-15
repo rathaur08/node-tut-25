@@ -59,7 +59,7 @@ async function getUsers() {
     // Get one Data 
     const findOneData = await User.findOne({ name: "Sunny" })
     console.log("Users retrieved successfully", findOneData);
-
+    console.log(`Users ${findOneData.name} id :`, findOneData._id.toHexString());
   } catch (error) {
     console.error("Error retrieving users", error);
   }
