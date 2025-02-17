@@ -23,16 +23,28 @@ const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   age: { type: Number, required: true, min: 10 },
   email: { type: String, required: true, unique: true },
-  createdAt: { type: Date, default: Date.now } // Corrected default value
+  createdAt: { type: Date, default: Date.now }, // Corrected default value
+  updetedAt: { type: Date, default: Date.now } // Corrected default value
 });
 
+// we will use middleware
+// important Note Middleware use always Model Top
+// Middleware must be defined before the model
+userSchema.pre(
+  ["updateOne", "updatemany", "findOneAndUpdate"],
+  function (next) {
+    this.set({ updetedAt: Date.now() });
+    next();
+  }
+);
 
+// Model must be defined after middleware
 const User = mongoose.model("User", userSchema);
 
 // insert User One Code 
 async function insertUser() {
   try {
-    const newUser = new User({ name: "Sunny", age: 23, email: "sunny@gmail.com" });
+    const newUser = new User({ name: "Varun", age: 25, email: "varun@gmail.com" });
     await newUser.save();
     console.log("User inserted successfully");
   } catch (error) {
@@ -57,12 +69,12 @@ async function insertUsers() {
 async function getUsers() {
   try {
     const users = await User.find();
-    // console.log("Users retrieved successfully", users);
+    console.log("Users retrieved successfully", users);
 
     // Get one Data 
-    const findOneData = await User.findOne({ name: "Sunny" })
-    console.log("Users retrieved successfully", findOneData);
-    console.log(`Users ${findOneData.name} id :`, findOneData._id.toHexString());
+    // const findOneData = await User.findOne({ name: "Sunny" })
+    // console.log("Users retrieved successfully", findOneData);
+    // console.log(`Users ${findOneData.name} id :`, findOneData._id.toHexString());
   } catch (error) {
     console.error("Error retrieving users", error);
   }
@@ -101,10 +113,10 @@ async function deleteUser(name) {
 
 (async () => {
   await connectDB();
-  await insertUser();
+  // await insertUser();
   // await insertUsers();
   // await getUsers();
-  // await updateUser("Sunny", 99);
+  await updateUser("Varun", 25);
   // await deleteUser("Abhi");
   mongoose.connection.close();
 })();
