@@ -23,20 +23,24 @@ const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   age: { type: Number, required: true, min: 10 },
   email: { type: String, required: true, unique: true },
-  createdAt: { type: Date, default: Date.now }, // Corrected default value
-  updetedAt: { type: Date, default: Date.now } // Corrected default value
-});
+  // createdAt: { type: Date, default: Date.now }, // Corrected default value
+  // updatedAt: { type: Date, default: Date.now } // Corrected default value
+},
+  {
+    timestamps: true
+  }
+);
 
 // we will use middleware
 // important Note Middleware use always Model Top
 // Middleware must be defined before the model
-userSchema.pre(
-  ["updateOne", "updatemany", "findOneAndUpdate"],
-  function (next) {
-    this.set({ updetedAt: Date.now() });
-    next();
-  }
-);
+// userSchema.pre(
+//   ["updateOne", "updatemany", "findOneAndUpdate"],
+//   function (next) {
+//     this.set({ updatedAt: Date.now() });
+//     next();
+//   }
+// );
 
 // Model must be defined after middleware
 const User = mongoose.model("User", userSchema);
@@ -116,7 +120,7 @@ async function deleteUser(name) {
   // await insertUser();
   // await insertUsers();
   // await getUsers();
-  await updateUser("Varun", 25);
+  await updateUser("Tarun", 55);
   // await deleteUser("Abhi");
   mongoose.connection.close();
 })();
