@@ -45,7 +45,7 @@ const userSchema = new mongoose.Schema({
 // Model must be defined after middleware
 const User = mongoose.model("User", userSchema);
 
-// insert User One Code 
+// insert Single User Data Fun 
 async function insertUser() {
   try {
     const newUser = new User({ name: "Varun", age: 25, email: "varun@gmail.com" });
@@ -56,12 +56,12 @@ async function insertUser() {
   }
 }
 
-// insert User Many Code 
-async function insertUsers() {
+// insert Many User Date Fun 
+async function insertManyUsers() {
   try {
     const users = [
-      { name: "Ravi", age: 20 },
-      { name: "Harsh", age: 27 }
+      { name: "Abhi", age: 29, email: "abhi@gmail.com" },
+      { name: "Varun", age: 25, email: "varun@gmail.com" }
     ];
     await User.insertMany(users);
     console.log("Users inserted successfully");
@@ -70,6 +70,7 @@ async function insertUsers() {
   }
 }
 
+// Get User Data Func 
 async function getUsers() {
   try {
     const users = await User.find();
@@ -84,6 +85,7 @@ async function getUsers() {
   }
 }
 
+// Update User Data Func 
 async function updateUser(name, newAge) {
   try {
     const updatedOneUser = await User.updateOne(
@@ -103,6 +105,7 @@ async function updateUser(name, newAge) {
   }
 }
 
+// Delete User Data Func 
 async function deleteUser(name) {
   try {
     // const deletedUser = await User.deleteOne({ name: name });
@@ -118,9 +121,9 @@ async function deleteUser(name) {
 (async () => {
   await connectDB();
   // await insertUser();
-  // await insertUsers();
+  // await insertManyUsers();
   // await getUsers();
-  await updateUser("Tarun", 55);
+  // await updateUser("Tarun", 28);
   // await deleteUser("Abhi");
   mongoose.connection.close();
 })();
