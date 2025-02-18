@@ -59,10 +59,10 @@ const main = async () => {
   // console.log(user)
 
   // Delete Multiple user
-  const deleteUser = await prisma.user.deleteMany({
-    where: [{ id: 1 },{ id: 2 },{ id: 4 }]
-  })
-  console.log(deleteUser)
+  // const deleteUser = await prisma.user.deleteMany({
+  //   where: [{ id: 1 },{ id: 2 },{ id: 4 }]
+  // })
+  // console.log(deleteUser)
 };
 
 main()
