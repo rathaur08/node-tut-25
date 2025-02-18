@@ -43,10 +43,23 @@ console.log("MySQL Connected Successfully");
 //   'Rahul', 'rahul@gmail.com'
 // ])
 
-const values = [
-  ['Ravi', 'ravi@gmail.com'],
-  ['Sumit', 'sumit@gmail.com'],
-  ['Bhola', 'bhola@gmail.com'],
-];
+// const values = [
+//   ['Ravi', 'ravi@gmail.com'],
+//   ['Sumit', 'sumit@gmail.com'],
+//   ['Bhola', 'bhola@gmail.com'],
+// ];
 
-await db.query(`INSERT INTO users (username, email) VALUES ?`, [values]);
+// await db.query(`INSERT INTO users (username, email) VALUES ?`, [values]);
+
+//  Read Data
+
+//  1 method Read data
+// console.log(await db.execute("SELECT * FROM users;"))
+
+//  2 method Read data
+// const [rows] = await db.execute("SELECT * FROM users;")
+// console.log(rows);
+
+// 3 method Read Filter data
+const [rows] = await db.query(`SELECT * FROM users WHERE username="Ravi"`)
+console.log(rows);
