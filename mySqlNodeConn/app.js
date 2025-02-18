@@ -16,3 +16,14 @@ console.log("MySQL Connected Successfully");
 // await db.execute(`create database nodetut25`)
 
 // console.log(await db.execute("show databases"))
+
+
+//  3: then we to create a table
+
+// await db.execute(`
+//   CREATE TABLE users (
+//     id int auto_increment primary key,
+//     username varchar(100) not null,
+//     email varchar(100) not null unique
+//   )
+// `)
