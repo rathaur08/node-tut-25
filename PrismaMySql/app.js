@@ -31,8 +31,23 @@ const main = async () => {
   // console.log(user)
 
   // Get a Single User with Filtering
-  const user = await prisma.user.findMany({
-    where: { name: "Sunny" },
+  // const user = await prisma.user.findMany({
+  //   where: { name: "Sunny" },
+  // })
+  // console.log(user)
+
+  // Update Data
+  // Update One User
+  // const user = await prisma.user.update({
+  //   where: { id: 1 },
+  //   data: { email: "rahul@gmail.com" },
+  // })
+  // console.log(user)
+
+    // Update Multipul User
+  const user = await prisma.user.updateMany({
+    where: { name: "Rahul"},
+    data: { email: "rahul@gmail.com" },
   })
   console.log(user)
 };
