@@ -36,7 +36,7 @@ const main = async () => {
   // })
   // console.log(user)
 
-  // Update Data
+  // ------------- Update Data ----------------
   // Update One User
   // const user = await prisma.user.update({
   //   where: { id: 1 },
@@ -44,12 +44,25 @@ const main = async () => {
   // })
   // console.log(user)
 
-    // Update Multipul User
-  const user = await prisma.user.updateMany({
-    where: { name: "Rahul"},
-    data: { email: "rahul@gmail.com" },
+  // Update Multiple User
+  //   const user = await prisma.user.updateMany({
+  //     where: { name: "Rahul"},
+  //     data: { email: "rahul@gmail.com" },
+  //   })
+  //   console.log(user)
+
+  // ------------- Delete (Remove Data) ----------------
+  // Delete One user
+  // const user = await prisma.user.delete({
+  //   where: { id: 1 }
+  // })
+  // console.log(user)
+
+  // Delete Multiple user
+  const deleteUser = await prisma.user.deleteMany({
+    where: [{ id: 1 },{ id: 2 },{ id: 4 }]
   })
-  console.log(user)
+  console.log(deleteUser)
 };
 
 main()
