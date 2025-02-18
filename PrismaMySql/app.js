@@ -11,13 +11,30 @@ const main = async () => {
   // console.log(user)
 
   // Multiple User
-  const newUsers = await prisma.user.createMany({
-    data: [
-      { name: 'Sunny', email: 'sunny@gmail.com', },
-      { name: 'Ravi', email: 'ravi@gmail.com', }
-    ]
-  });
-  console.log(newUsers)
+  // const newUsers = await prisma.user.createMany({
+  //   data: [
+  //     { name: 'Sunny', email: 'sunny@gmail.com', },
+  //     { name: 'Ravi', email: 'ravi@gmail.com', }
+  //   ]
+  // });
+  // console.log(newUsers)
+
+  // Read || ( Fetch Data )
+  // Get All Users 
+  // const users = await prisma.user.findMany()
+  // console.log(users)
+
+  // Get a Single User by ID
+  // const user = await prisma.user.findUnique({
+  //   where: { id: 1 },
+  // })
+  // console.log(user)
+
+  // Get a Single User with Filtering
+  const user = await prisma.user.findMany({
+    where: { name: "Sunny" },
+  })
+  console.log(user)
 };
 
 main()
