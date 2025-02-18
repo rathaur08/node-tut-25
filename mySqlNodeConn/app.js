@@ -61,5 +61,14 @@ console.log("MySQL Connected Successfully");
 // console.log(rows);
 
 // 3 method Read Filter data
-const [rows] = await db.query(`SELECT * FROM users WHERE username="Ravi"`)
-console.log(rows);
+// const [rows] = await db.query(`SELECT * FROM users WHERE email = 'ravi@gmail.com' `)
+// console.log(rows);
+
+//  Update Table Data
+
+try {
+  const [rows] = await db.query("UPDATE users SET username='Ravi Rathore' WHERE email = 'ravi@gmail.com' ");
+  console.log("All Users", rows)
+} catch (err) {
+  console.error(err);
+}
