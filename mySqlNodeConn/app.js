@@ -56,7 +56,7 @@ console.log("MySQL Connected Successfully");
 //  1 method Read data
 // console.log(await db.execute("SELECT * FROM users;"))
 
-//  2 method Read data
+//  2 method Read All Table data
 // const [rows] = await db.execute("SELECT * FROM users;")
 // console.log(rows);
 
@@ -66,19 +66,22 @@ console.log("MySQL Connected Successfully");
 
 //  Update Table row Data
 
-// try {
-//   const [rows] = await db.query("UPDATE users SET username='Ravi Rathore' WHERE email = 'ravi@gmail.com' ");
-//   console.log("All Users", rows)
-// } catch (err) {
-//   console.error(err);
-// }
-
-//  Delete Table row data
-
 try {
   const [rows] = await db.query(
-    "DELETE FROM users WHERE email = 'sumit@gmail.com' ");
+    "UPDATE users SET username=? WHERE email = ? ",
+    ["Ravi", "ravi@gmail.com"]
+  );
   console.log("All Users", rows)
 } catch (err) {
   console.error(err);
 }
+
+//  Delete Table row data
+
+// try {
+//   const [rows] = await db.query(
+//     "DELETE FROM users WHERE email = 'sumit@gmail.com' ");
+//   console.log("All Users", rows)
+// } catch (err) {
+//   console.error(err);
+// }
