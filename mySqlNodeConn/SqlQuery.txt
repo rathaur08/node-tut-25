@@ -1,0 +1,38 @@
+<!-- database commands -->
+
+<!-- Create Database  -->
+create datasase employess;
+
+<!-- create taable users -->
+CREATE TABLE users (
+  id int auto_increment primary key,
+  name varchar(100) not null,
+  email varchar(100) not null unique
+)
+
+
+<!-- INSERT Single dATA USERS -->
+
+INSERT INTO users (name, email) VALUES ('Sunny','sunny@gmail.com');
+SELECT * FROM users;
+
+
+<!-- INSERT Many dATA USERS -->
+
+INSERT INTO users (name, email) VALUES 
+('Tarun','tarun@gmail.com'),
+('Abhi','abhi@gmail.com');
+
+SELECT * FROM users;
+
+<!-- Get Single User Filter  -->
+select * from users where name="Sunny";
+
+<!-- Update Table -->
+
+UPDATE users 
+SET email = "sunny@jet.in" 
+WHERE id = 1;
+
+<!-- Delete Tavle Data -->
+DELETE FROM users WHERE id=7;
