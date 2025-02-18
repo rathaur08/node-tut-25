@@ -66,15 +66,15 @@ console.log("MySQL Connected Successfully");
 
 //  Update Table row Data
 
-try {
-  const [rows] = await db.query(
-    "UPDATE users SET username=? WHERE email = ? ",
-    ["Ravi", "ravi@gmail.com"]
-  );
-  console.log("All Users", rows)
-} catch (err) {
-  console.error(err);
-}
+// try {
+//   const [rows] = await db.query(
+//     "UPDATE users SET username=? WHERE email = ? ",
+//     ["Ravi", "ravi@gmail.com"]
+//   );
+//   console.log("All Users", rows)
+// } catch (err) {
+//   console.error(err);
+// }
 
 //  Delete Table row data
 
