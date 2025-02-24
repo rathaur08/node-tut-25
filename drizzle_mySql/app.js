@@ -16,8 +16,14 @@ const main = async () => {
   // console.log(" insertMultiUsers ", insertMultiUsers);
 
   // 3  Read User Data
-  const readUsers = await db.select().from(usersTable);
-  console.log(" readUsers ", readUsers);
+  // const readUsers = await db.select().from(usersTable);
+  // console.log(" readUsers ", readUsers);
+
+  // 4  Read Data Using Filter usersTable 
+  const readFilterUsers = await db.select().from(usersTable).where({ name: "Sunny" });
+  const readFilterUsers1 = await db.select().from(usersTable).where({ email: "sunny@gmail.com" });
+  console.log(" readFilterUsers ", readFilterUsers);
+  console.log(" readFilterUsers1 ", readFilterUsers1);
 
 };
 
