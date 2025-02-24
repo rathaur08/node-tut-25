@@ -28,13 +28,20 @@ const main = async () => {
   // console.log(" readFilterUsers1 ", readFilterUsers1);
 
   // 
-  // 4  Update usersTable Data
+  // 5  Update usersTable Data
   // const updateUser = await db.update(usersTable).set({ age: "24" }).where({ name: "Sunny" });
   // console.log(" updateUser ", updateUser);
 
-  // 5  2-Method Update usersTable Data 
-  const updateUser2 = await db.update(usersTable).set({ age: "25" }).where(eq(usersTable.email, "sunny@gmail.com"));
-  console.log(" updateUser2 ", updateUser2);
+  // 6  2-Method Update usersTable Data 
+  // const updateUser2 = await db.update(usersTable).set({ age: "25" }).where(eq(usersTable.email, "sunny@gmail.com"));
+  // console.log(" updateUser2 ", updateUser2);
+
+  // 7  Delete usersTable Data 
+  // const deleteUser = await db.delete(usersTable).where({ name: "Abhi" });
+  // console.log(" deleteUser ", deleteUser);
+
+  const deleteUser = await db.delete(usersTable).where(eq(usersTable.email, "ravi@gmail.com"));
+  console.log(" deleteUser ", deleteUser);
 
 };
 
