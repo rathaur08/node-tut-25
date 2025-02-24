@@ -8,13 +8,16 @@ const main = async () => {
   // console.log(" insertUser ", insertUser);
 
   // 2 insert Multi Users 
-  const insertMultiUsers = await db.insert(usersTable)
-    .values([
-      { name: "Rahul", age: "78", email: "rahul@gmail.com" },
-      { name: "Ravi", age: "34", email: "ravi@gmail.com" }
-    ])
-  console.log(" insertMultiUsers ", insertMultiUsers);
+  // const insertMultiUsers = await db.insert(usersTable)
+  //   .values([
+  //     { name: "Rahul", age: "78", email: "rahul@gmail.com" },
+  //     { name: "Ravi", age: "34", email: "ravi@gmail.com" }
+  //   ])
+  // console.log(" insertMultiUsers ", insertMultiUsers);
 
+  // 3  Read User Data
+  const readUsers = await db.select().from(usersTable);
+  console.log(" readUsers ", readUsers);
 
 };
 
