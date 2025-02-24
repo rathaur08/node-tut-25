@@ -40,8 +40,8 @@ const main = async () => {
   // const deleteUser = await db.delete(usersTable).where({ name: "Abhi" });
   // console.log(" deleteUser ", deleteUser);
 
-  const deleteUser = await db.delete(usersTable).where(eq(usersTable.email, "ravi@gmail.com"));
-  console.log(" deleteUser ", deleteUser);
+  // const deleteUser2 = await db.delete(usersTable).where(eq(usersTable.email, "ravi@gmail.com"));
+  // console.log(" deleteUser2 ", deleteUser2);
 
 };
 
