@@ -2,6 +2,7 @@ import express from "express";
 import { PORT } from "./env.js";
 import path from "path";
 import { shortRoutes } from "./routes/short.routes.js"
+import { authRoute } from "./routes/auth.routes.js"
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.set("view engine", "ejs");
 
 // express router
 app.use(shortRoutes);
+app.use(authRoute);
 
 // 404 Page Not Found
 app.use((req, res) => {
