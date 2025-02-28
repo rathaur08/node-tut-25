@@ -118,6 +118,27 @@ async function deleteUser(name) {
   }
 }
 
+// added a searchUser function that checks if a given value matches the name, age, or email fields. 
+async function searchUser(value) {
+  try {
+    const searchResult = await User.findOne({
+      $or: [
+        { name: value },
+        { age: value },
+        { email: value }
+      ]
+    });
+
+    if (searchResult) {
+      console.log("Search result found:", searchResult);
+    } else {
+      console.log("Value not found in search");
+    }
+  } catch (error) {
+    console.error("Error searching user", error);
+  }
+}
+
 (async () => {
   await connectDB();
   // await insertUser();
@@ -125,5 +146,6 @@ async function deleteUser(name) {
   // await getUsers();
   // await updateUser("Tarun", 28);
   // await deleteUser("Abhi");
+  await searchUser("Ravi"); // Example search
   mongoose.connection.close();
 })();
