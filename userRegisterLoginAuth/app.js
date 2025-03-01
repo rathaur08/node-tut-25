@@ -1,5 +1,6 @@
 import express from "express";
 import { homeRoutes } from "./routes/home.routes.js";
+import { authRoute } from "./routes/auth.routes.js";
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.set("view engine", "ejs");
 
 // express router
 
+app.use(authRoute);
 app.use(homeRoutes);
 
 app.listen(PORT, () => {
