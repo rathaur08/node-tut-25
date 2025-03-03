@@ -11,7 +11,13 @@
   <!-- added Navbar using ejs File -->
   <%- include("./partials/Header") %>
 
-    <h1>Home page</h1>
+    <% if (isLoggedIn) { %>
+      <h1>You are Logged In</h1>
+      <% } else { %>
+        <h1>You are Not Logged In</h1>
+        <% } %>
+
+          <h3>Home page</h3>
 </body>
 
 </html>
