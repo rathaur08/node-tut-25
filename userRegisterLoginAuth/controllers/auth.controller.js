@@ -11,6 +11,7 @@ export const postRegister = async (req, res) => {
 
   const userExists = await getUserByEmail(email);
   console.log("userExists", userExists);
+
   if (userExists) return res.redirect("/register");
 
   const [user] = await createUser({ name, age, email, password })
@@ -23,9 +24,16 @@ export const getLoginPage = (req, res) => {
   return res.render("auth/login")
 };
 
-export const postLogin = (req, res) => {
-  // res.setHeader("Set-Cookie", "isLoggedIn=true; path=/;");
-  res.cookie("isLoggedIn", true);
+export const postLogin = async (req, res) => {
+  const { email, password } = req.body;
 
+  const user = await getUserByEmail(email);
+  console.log("user", user);
+
+  if (!user) return res.redirect("/login");
+
+  if (user.password !== password) return res.redirect("/login");
+
+  res.cookie("isLoggedIn", true);
   res.redirect("/")
 };
