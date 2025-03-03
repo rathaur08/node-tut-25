@@ -1,9 +1,10 @@
-
 export const getHome = (req, res) => {
 
-  let isLoggedIn = req.headers.cookie;
-  isLoggedIn = Boolean(isLoggedIn?.split("=")[1]);
-  console.log("isLoggedIn:", isLoggedIn);
+  // let isLoggedIn = req.headers.cookie;
+  // isLoggedIn = Boolean(isLoggedIn?.split("=")[1]);
+  // console.log("isLoggedIn:", isLoggedIn);
+
+  let isLoggedIn = req.cookie.isLoggedIn;
 
   return res.render("index", { isLoggedIn })
 };
