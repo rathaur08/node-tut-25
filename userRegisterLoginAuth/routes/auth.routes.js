@@ -15,5 +15,6 @@ router.route("/login")
   .post(authControllers.postLogin);
 
 router.route("/profile").get(authControllers.getProfilePage);
+router.route("/logout").get(authControllers.userLogoutPage);
 
 export const authRoute = router;

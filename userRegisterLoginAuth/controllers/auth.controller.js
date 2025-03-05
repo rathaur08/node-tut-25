@@ -1,11 +1,15 @@
 import { createUser, getUserByEmail, hashPassword, comparePassword, generateToken } from "../services/auth.services.js";
 
 export const getRegisterPage = (req, res) => {
+  if (req.user) return res.redirect("/");
+
   return res.render("auth/register")
 };
 
 // Handling User Registration in Express – Storing Data in Database
 export const postRegister = async (req, res) => {
+  if (req.user) return res.redirect("/");
+
   // console.log(req.body);
   const { name, age, email, password } = req.body;
 
@@ -23,10 +27,14 @@ export const postRegister = async (req, res) => {
 };
 
 export const getLoginPage = (req, res) => {
+  if (req.user) return res.redirect("/");
+
   return res.render("auth/login")
 };
 
 export const postLogin = async (req, res) => {
+  if (req.user) return res.redirect("/");
+
   const { email, password } = req.body;
 
   const user = await getUserByEmail(email);
@@ -58,5 +66,12 @@ export const postLogin = async (req, res) => {
 // profile
 export const getProfilePage = (req, res) => {
   if (!req.user) return res.send("Not logged in");
+
   return res.send(`<h1>Hey ${req.user.name} - ${req.user.email}</h1>`);
+};
+
+// user Logout Page 
+export const userLogoutPage = (req, res) => {
+  res.clearCookie("access_token");
+  res.redirect("/login")
 };
