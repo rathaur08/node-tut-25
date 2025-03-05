@@ -37,3 +37,8 @@ export const generateToken = ({ id, name, email }) => {
     expiresIn: "30d",
   });
 };
+
+// verify JWT Token
+export const verifyJWTToken = (token) => {
+  return jwt.verify(token, process.env.JWT_SECRET);
+};
