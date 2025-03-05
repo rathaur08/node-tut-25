@@ -4,9 +4,7 @@ export const getHome = (req, res) => {
   // isLoggedIn = Boolean(isLoggedIn?.split("=")[1]);
   // console.log("isLoggedIn:", isLoggedIn);
 
-  let isLoggedIn = req.signedCookies;
-
-  return res.render("index", { isLoggedIn })
+  return res.render("index")
 };
 
 export const getContact = (req, res) => {

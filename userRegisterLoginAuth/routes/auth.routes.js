@@ -14,5 +14,6 @@ router.route("/login")
   .get(authControllers.getLoginPage)
   .post(authControllers.postLogin);
 
+router.route("/profile").get(authControllers.getProfilePage);
 
 export const authRoute = router;
