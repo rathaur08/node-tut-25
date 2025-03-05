@@ -1,4 +1,4 @@
-import { createUser, getUserByEmail, hashPassword, comparePassword } from "../services/auth.services.js";
+import { createUser, getUserByEmail, hashPassword, comparePassword, generateToken } from "../services/auth.services.js";
 
 export const getRegisterPage = (req, res) => {
   return res.render("auth/register")
@@ -39,6 +39,14 @@ export const postLogin = async (req, res) => {
   // if (user.password !== password) return res.redirect("/login");
   if (!isPasswordValid) return res.redirect("/login");
 
-  res.cookie("isLoggedIn", true);
+  // res.cookie("isLoggedIn", true);
+  const token = generateToken({
+    id: user.id,
+    name: user.name,
+    email: user.email,
+  });
+
+  res.cookie("access_token", token);
+
   res.redirect("/")
 };
