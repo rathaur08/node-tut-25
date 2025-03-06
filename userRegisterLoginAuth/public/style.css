@@ -129,6 +129,10 @@ p {
   color: #777;
 }
 
+.flash-error{
+  color: #ff0011;
+}
+
 h2 {
   line-height: 1.66;
   margin: 0;

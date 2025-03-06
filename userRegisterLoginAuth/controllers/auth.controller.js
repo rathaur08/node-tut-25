@@ -3,7 +3,7 @@ import { createUser, getUserByEmail, hashPassword, comparePassword, generateToke
 export const getRegisterPage = (req, res) => {
   if (req.user) return res.redirect("/");
 
-  return res.render("auth/register")
+  return res.render("auth/register", { errors: req.flash("errors") })
 };
 
 // Handling User Registration in Express – Storing Data in Database
@@ -16,7 +16,11 @@ export const postRegister = async (req, res) => {
   const userExists = await getUserByEmail(email);
   console.log("userExists", userExists);
 
-  if (userExists) return res.redirect("/register");
+  // if (userExists) return res.redirect("/register");
+  if (userExists) {
+    req.flash("errors", "User already exists.");
+    return res.redirect("/register");
+  }
 
   const hashedPassword = await hashPassword(password);
 
@@ -29,7 +33,7 @@ export const postRegister = async (req, res) => {
 export const getLoginPage = (req, res) => {
   if (req.user) return res.redirect("/");
 
-  return res.render("auth/login")
+  return res.render("auth/login", { errors: req.flash("errors") })
 };
 
 export const postLogin = async (req, res) => {
@@ -40,12 +44,20 @@ export const postLogin = async (req, res) => {
   const user = await getUserByEmail(email);
   console.log("user", user);
 
-  if (!user) return res.redirect("/login");
+  // if (!user) return res.redirect("/login");
+  if (!user) {
+    req.flash("errors", "Invalid Email OR Password");
+    return res.redirect("/login");
+  }
 
   const isPasswordValid = await comparePassword(password, user.password);
 
   // if (user.password !== password) return res.redirect("/login");
-  if (!isPasswordValid) return res.redirect("/login");
+  // if (!isPasswordValid) return res.redirect("/login");
+  if (!isPasswordValid) {
+    req.flash("errors", "Invalid Email OR Password");
+    return res.redirect("/login");
+  }
 
   // res.cookie("isLoggedIn", true);
   const token = generateToken({

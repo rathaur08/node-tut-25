@@ -2,10 +2,11 @@ import express from "express";
 import { homeRoutes } from "./routes/home.routes.js";
 import { authRoute } from "./routes/auth.routes.js";
 import cookieParser from "cookie-parser";
+import session from "express-session";
+import flash from "connect-flash";
 import { verifyAuthentication } from "./middlewares/verify-auth-middleware.js"
 
 const app = express();
-app.use(cookieParser());
 
 const PORT = process.env.PORT || 3000;
 
@@ -13,6 +14,13 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 
 app.set("view engine", "ejs");
+
+app.use(cookieParser());
+
+app.use(
+  session({ secret: "my-secret", resave: true, saveUninitialized: false })
+);
+app.use(flash());
 
 // This must be after cookieParser middleware.
 app.use(verifyAuthentication);
