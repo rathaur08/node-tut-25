@@ -4,11 +4,12 @@ import { productTables } from "../drizzle/schema.js";
 
 // getAllProductData
 
-export const getAllProductData = async () => {
-  return await db.select().from(productTables);
+export const getAllProductData = async (userId) => {
+  return await db.select().from(productTables)
+    .where(eq(productTables.userId, userId));
 }
 
-export const createProduct = async ({ product_name, product_value, userId = "8" }) => {
+export const createProduct = async ({ product_name, product_value, userId }) => {
   return await db.insert(productTables)
     .values({ product_name, product_value, userId })
     .$returningId();

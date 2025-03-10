@@ -21,15 +21,15 @@ export const usersTable = mysqlTable('users_table', {
   updatedAt: timestamp("updated_at").defaultNow().$onUpdate().notNull(),
 });
 
-// // A user can have many Product Table
-// export const usersRelation = relations(usersTable, ({ many }) => ({
-//   productTable: many(productTables),
-// }))
+// A user can have many Product Table
+export const usersRelation = relations(usersTable, ({ many }) => ({
+  productTable: many(productTables),
+}))
 
-// // A Product Table belongs to a user
-// export const productTableRelation = relations(productTables, ({ one }) => ({
-//   user: one(usersTable, {
-//     fields: [productTables.userId], //foreign key
-//     references: [usersTable.id],
-//   }),
-// }));
+// A Product Table belongs to a user
+export const productTableRelation = relations(productTables, ({ one }) => ({
+  user: one(usersTable, {
+    fields: [productTables.userId], //foreign key
+    references: [usersTable.id],
+  }),
+}));
