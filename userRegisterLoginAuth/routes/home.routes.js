@@ -1,9 +1,10 @@
 import { Router } from "express";
-import { getHome, getContact } from "../controllers/home.controller.js"
+import { getHome, getContact, postHomeProduct } from "../controllers/home.controller.js"
 
 const router = Router();
 
 router.get("/", getHome);
+router.post("/", postHomeProduct)
 
 router.get("/contact", getContact);
 

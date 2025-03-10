@@ -4,8 +4,8 @@ import { timestamp } from 'drizzle-orm/pg-core';
 
 export const productTables = mysqlTable('product_table', {
   id: int().autoincrement().primaryKey(),
-  produc_name: varchar({ length: 255 }).notNull(),
-  produc_value: varchar({ length: 255 }).notNull(),
+  product_name: varchar({ length: 255 }).notNull(),
+  product_value: varchar({ length: 255 }).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().$onUpdate().notNull(),
   userId: int("user_id").notNull().references(() => usersTable.id),
