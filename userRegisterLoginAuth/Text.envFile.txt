@@ -2,7 +2,7 @@
 .env File Code -->
 
 PORT=3000
-DATABASE_URL=localhost:3000
+DATABASE_URL=mysql://root:password@localhost:3306/nodejs_tut25
 JWT_SECRET=rathaur08
 
 END Code .env File Code -->
