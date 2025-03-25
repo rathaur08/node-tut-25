@@ -1,0 +1,9 @@
+
+.env File Code -->
+
+PORT=3000
+DATABASE_URL=localhost:3000
+JWT_SECRET=rathaur08
+
+END Code .env File Code -->
+
