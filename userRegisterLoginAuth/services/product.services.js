@@ -14,3 +14,17 @@ export const createProduct = async ({ product_name, product_value, userId }) => 
     .values({ product_name, product_value, userId })
     .$returningId();
 }
+
+// findProductById
+export const findProductById = async (id) => {
+  const [result] = await db.select().from(productTables)
+    .where(eq(productTables.id, id));
+  return result;
+}
+
+// updateProduct
+export const updateProduct = async ({ id, product_name, product_value }) => {
+  return await db.update(productTables)
+    .set({ product_name, product_value })
+    .where(eq(productTables.id, id));
+}
