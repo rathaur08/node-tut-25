@@ -1,4 +1,4 @@
-import { getAllProductData, createProduct, findProductById, updateProduct } from "../services/product.services.js";
+import { getAllProductData, createProduct, findProductById, updateProduct, deleteProductById } from "../services/product.services.js";
 import z from "zod";
 
 // 
@@ -85,6 +85,23 @@ export const postEditHomeProductPage = async (req, res) => {
   }
 }
 
+// deleteHomeProduct
+export const deleteHomeProduct = async (req, res) => {
+  if (!req.user) return res.redirect("/login");
+
+
+  try {
+    const { data: id, error } = z.coerce.number().int().safeParse((req.params.id))
+    if (error) return res.redirect("/404");
+
+    await deleteProductById(id)
+
+    return res.redirect("/");
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send("Internal Server Error")
+  }
+};
 
 export const getContact = (req, res) => {
   return res.render("Contact")

@@ -28,3 +28,9 @@ export const updateProduct = async ({ id, product_name, product_value }) => {
     .set({ product_name, product_value })
     .where(eq(productTables.id, id));
 }
+
+// deleteProductById
+export const deleteProductById = async (id) => {
+  return await db.delete(productTables)
+    .where(eq(productTables.id, id));
+}

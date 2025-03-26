@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getHome, getContact, postHomeProduct, getEditHomeProductPage, postEditHomeProductPage } from "../controllers/home.controller.js"
+import { getHome, getContact, postHomeProduct, getEditHomeProductPage, postEditHomeProductPage, deleteHomeProduct } from "../controllers/home.controller.js"
 
 const router = Router();
 
@@ -10,6 +10,8 @@ router.post("/", postHomeProduct)
 router.route("/edit/:id")
   .get(getEditHomeProductPage)
   .post(postEditHomeProductPage)
+
+router.route("/delete/:id").post(deleteHomeProduct);
 
 router.get("/contact", getContact);
 
