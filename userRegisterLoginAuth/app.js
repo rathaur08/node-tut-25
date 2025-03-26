@@ -5,7 +5,6 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import flash from "connect-flash";
 import { verifyAuthentication } from "./middlewares/verify-auth-middleware.js"
-import { productRoute } from "./routes/product.routes.js";
 
 const app = express();
 
@@ -35,7 +34,6 @@ app.use((req, res, next) => {
 
 app.use(authRoute);
 app.use(homeRoutes);
-app.use(productRoute);
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);

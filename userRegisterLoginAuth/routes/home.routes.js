@@ -6,6 +6,7 @@ const router = Router();
 router.get("/", getHome);
 router.post("/", postHomeProduct)
 
+// Home Page Products Update / Edit / Delete 
 router.route("/edit/:id")
   .get(getEditHomeProductPage)
   .post(postEditHomeProductPage)

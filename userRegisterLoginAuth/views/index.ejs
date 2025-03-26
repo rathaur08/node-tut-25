@@ -34,7 +34,7 @@
       <button type="submit">Submit</button>
     </form>
     <h1 style="text-align: center">Product Table</h1>
-    <div style="display: flex; justify-content: center">
+    <div style="display: flex; justify-content: center; flex-wrap: wrap">
       <% product.map((data)=>{ %>
       <div style="border: 1px solid black; margin: 5px; padding: 5px">
         <p>Product Name : <%= data.product_name %></p>
