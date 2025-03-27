@@ -1,4 +1,9 @@
-import { createUser, getUserByEmail, hashPassword, comparePassword, generateToken } from "../services/auth.services.js";
+import { ACCESS_TOKEN_EXPIRY, REFRESH_TOKEN_EXPIRY } from "../config/constants.js";
+import {
+  createUser, getUserByEmail, hashPassword, comparePassword,
+  //  generateToken
+  createSession, createAccessToken, createRefreshToken
+} from "../services/auth.services.js";
 import { loginUserSchema, registerUserSchema } from "../validators/auth.validator.js";
 
 export const getRegisterPage = (req, res) => {
@@ -85,13 +90,41 @@ export const postLogin = async (req, res) => {
   }
 
   // res.cookie("isLoggedIn", true);
-  const token = generateToken({
+  // const token = generateToken({
+  //   id: user.id,
+  //   name: user.name,
+  //   email: user.email,
+  // });
+
+  // res.cookie("access_token", token);
+
+  // we need to create a sessions
+  const session = await createSession(user.id, {
+    ip: req.clientIp,
+    userAgent: req.headers["user-agent"],
+  })
+
+  const accessToken = createAccessToken({
     id: user.id,
     name: user.name,
     email: user.email,
+    sessionId: session.id,
+  })
+
+  const refreshToken = createRefreshToken(session.id)
+
+  const baseConfig = { httpOnly: true, secure: true };
+
+  res.cookie("access_token", accessToken, {
+    ...baseConfig,
+    maxAge: ACCESS_TOKEN_EXPIRY,
   });
 
-  res.cookie("access_token", token);
+  res.cookie("refresh_token", refreshToken, {
+    ...baseConfig,
+    maxAge: REFRESH_TOKEN_EXPIRY,
+  });
+
 
   res.redirect("/")
 };
