@@ -1,4 +1,5 @@
 import { relations } from 'drizzle-orm';
+import { boolean, text } from 'drizzle-orm/gel-core';
 import { int, mysqlTable, varchar } from 'drizzle-orm/mysql-core';
 import { timestamp } from 'drizzle-orm/pg-core';
 
@@ -9,6 +10,16 @@ export const productTables = mysqlTable('product_table', {
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().$onUpdate().notNull(),
   userId: int("user_id").notNull().references(() => usersTable.id),
+});
+
+export const sessionsTables = mysqlTable('sessions_table', {
+  id: int().autoincrement().primaryKey(),
+  userId: int("user_id").notNull().references(() => usersTable.id, { onDelete: "cascade" }), // userid sessions data auto delete a user doesn't exist
+  valid: boolean().default(true).notNull(),
+  userAgent: text("user_agent"),
+  ip: varchar({ length: 250 }),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().$onUpdate().notNull(),
 });
 
 export const usersTable = mysqlTable('users_table', {
@@ -24,6 +35,7 @@ export const usersTable = mysqlTable('users_table', {
 // A user can have many Product Table
 export const usersRelation = relations(usersTable, ({ many }) => ({
   productTable: many(productTables),
+  sessionsTable: many(sessionsTables),
 }))
 
 // A Product Table belongs to a user
@@ -33,3 +45,11 @@ export const productTableRelation = relations(productTables, ({ one }) => ({
     references: [usersTable.id],
   }),
 }));
+
+// A sessions Table belongs to a user
+export const sessionsTableRelation = relations(sessionsTables, ({ one }) => ({
+  user: one(usersTable, {
+    fields: [sessionsTables.userId], // foreign Key
+    references: [usersTable.id],
+  })
+}))
