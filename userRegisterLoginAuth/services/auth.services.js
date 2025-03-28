@@ -1,11 +1,10 @@
 import { eq } from "drizzle-orm";
 import { db } from "../config/db.js";
 import { sessionsTables, usersTable } from "../drizzle/schema.js";
-import bcrypt from "bcryptjs";
+// import bcrypt from "bcryptjs";
 import argon2 from "argon2";
 import jwt from "jsonwebtoken";
 import { ACCESS_TOKEN_EXPIRY, MILLISECONDS_PER_SECOND, REFRESH_TOKEN_EXPIRY } from "../config/constants.js";
-
 
 export const getUserByEmail = async (email) => {
   const [user] = await db
@@ -25,7 +24,6 @@ export const createUser = async ({ name, age, email, password }) => {
 export const hashPassword = async (password) => {
   // return await bcrypt.hash(password, 10)
   return await argon2.hash(password)
-
 }
 
 export const comparePassword = async (password, hash) => {
@@ -48,13 +46,13 @@ export const createSession = async (userId, { ip, userAgent }) => {
   return session;
 };
 
-
 // createAccessToken
 export const createAccessToken = ({ id, name, email, sessionId }) => {
   return jwt.sign({ id, name, email, sessionId }, process.env.JWT_SECRET, {
     expiresIn: ACCESS_TOKEN_EXPIRY / MILLISECONDS_PER_SECOND, //   expiresIn: "15m",
   });
 };
+
 // createAccessToken
 export const createRefreshToken = (sessionId) => {
   return jwt.sign({ sessionId }, process.env.JWT_SECRET, {
@@ -65,4 +63,53 @@ export const createRefreshToken = (sessionId) => {
 // verify JWT Token
 export const verifyJWTToken = (token) => {
   return jwt.verify(token, process.env.JWT_SECRET);
+};
+
+//findSessionById
+export const findSessionById = async (sessionId) => {
+  const [session] = await db.select().from(sessionsTables)
+    .where(eq(sessionsTables.id, sessionId));
+  return session;
+}
+
+// findUserById
+export const findUserById = async (userId) => {
+  const [user] = await db.select().from(usersTable)
+    .where(eq(usersTable.id, userId));
+  return user;
+}
+
+//refreshTokens
+export const refreshTokens = async (refreshToken) => {
+  try {
+    const decodedToken = verifyJWTToken(refreshToken);
+    const curruntSession = await findSessionById(decodedToken.sessionId)
+
+    if (!curruntSession || !curruntSession.valid) {
+      throw new Error("Invalid Session");
+    }
+
+    const user = await findUserById(curruntSession.userId);
+    if (!user) throw new Error("Invalid User");
+
+    const userInfo = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      sessionId: curruntSession.id,
+    }
+
+    const newAccessToken = createAccessToken(userInfo);
+    const newRefreshToken = createRefreshToken(curruntSession.id)
+
+    return {
+      newAccessToken,
+      newRefreshToken,
+      user: userInfo,
+    };
+
+  } catch (error) {
+    console.error(error.message)
+  }
+
 };
