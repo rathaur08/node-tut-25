@@ -2,7 +2,8 @@ import { ACCESS_TOKEN_EXPIRY, REFRESH_TOKEN_EXPIRY } from "../config/constants.j
 import {
   createUser, getUserByEmail, hashPassword, comparePassword,
   //  generateToken
-  createSession, createAccessToken, createRefreshToken, clearUserSession
+  createSession, createAccessToken, createRefreshToken, clearUserSession,
+  authenticateUser
 } from "../services/auth.services.js";
 import { loginUserSchema, registerUserSchema } from "../validators/auth.validator.js";
 
@@ -46,32 +47,7 @@ export const postRegister = async (req, res) => {
   // console.log("user", user);
 
   // write a code Users Logged In After Registration 
-  // we need to create a sessions
-  const session = await createSession(user.id, {
-    ip: req.clientIp,
-    userAgent: req.headers["user-agent"],
-  })
-
-  const accessToken = createAccessToken({
-    id: user.id,
-    name: name,
-    email: email,
-    sessionId: session.id,
-  })
-
-  const refreshToken = createRefreshToken(session.id)
-
-  const baseConfig = { httpOnly: true, secure: true };
-
-  res.cookie("access_token", accessToken, {
-    ...baseConfig,
-    maxAge: ACCESS_TOKEN_EXPIRY,
-  });
-
-  res.cookie("refresh_token", refreshToken, {
-    ...baseConfig,
-    maxAge: REFRESH_TOKEN_EXPIRY,
-  });
+  await authenticateUser({ req, res, user, name, email })
 
   res.redirect("/")
 };
@@ -127,32 +103,7 @@ export const postLogin = async (req, res) => {
   // res.cookie("access_token", token);
 
   // we need to create a sessions
-  const session = await createSession(user.id, {
-    ip: req.clientIp,
-    userAgent: req.headers["user-agent"],
-  })
-
-  const accessToken = createAccessToken({
-    id: user.id,
-    name: user.name,
-    email: user.email,
-    sessionId: session.id,
-  })
-
-  const refreshToken = createRefreshToken(session.id)
-
-  const baseConfig = { httpOnly: true, secure: true };
-
-  res.cookie("access_token", accessToken, {
-    ...baseConfig,
-    maxAge: ACCESS_TOKEN_EXPIRY,
-  });
-
-  res.cookie("refresh_token", refreshToken, {
-    ...baseConfig,
-    maxAge: REFRESH_TOKEN_EXPIRY,
-  });
-
+  await authenticateUser({ req, res, user })
 
   res.redirect("/")
 };
