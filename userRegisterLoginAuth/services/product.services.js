@@ -3,7 +3,6 @@ import { db } from "../config/db.js";
 import { productTables } from "../drizzle/schema.js";
 
 // getAllProductData
-
 export const getAllProductData = async (userId) => {
   return await db.select().from(productTables)
     .where(eq(productTables.userId, userId));

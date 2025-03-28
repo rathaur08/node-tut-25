@@ -3,8 +3,10 @@ import {
   createUser, getUserByEmail, hashPassword, comparePassword,
   //  generateToken
   createSession, createAccessToken, createRefreshToken, clearUserSession,
-  authenticateUser
+  authenticateUser,
+  findUserById
 } from "../services/auth.services.js";
+import { getAllProductData } from "../services/product.services.js";
 import { loginUserSchema, registerUserSchema } from "../validators/auth.validator.js";
 
 export const getRegisterPage = (req, res) => {
@@ -113,10 +115,26 @@ export const postLogin = async (req, res) => {
 
 // getProfilePage
 // profile
-export const getProfilePage = (req, res) => {
-  if (!req.user) return res.send("Not logged in");
+export const getProfilePage = async (req, res) => {
+  // if (!req.user) return res.send("Not logged in");
+  // return res.send(`<h1>Hey ${req.user.name} - ${req.user.email}</h1>`);
 
-  return res.send(`<h1>Hey ${req.user.name} - ${req.user.email}</h1>`);
+  if (!req.user) return res.send("Not logged in");;
+
+  const user = await findUserById(req.user.id);
+  if (!user) return res.redirect("/login");
+
+  const userProducts = await getAllProductData(user.id);
+
+  return res.render("auth/Profile", {
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      createdAt : user.createdAt,
+      products: userProducts,
+    }
+  })
 };
 
 // user Logout Page 
