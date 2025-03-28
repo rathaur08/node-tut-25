@@ -2,7 +2,7 @@ import { ACCESS_TOKEN_EXPIRY, REFRESH_TOKEN_EXPIRY } from "../config/constants.j
 import {
   createUser, getUserByEmail, hashPassword, comparePassword,
   //  generateToken
-  createSession, createAccessToken, createRefreshToken
+  createSession, createAccessToken, createRefreshToken, clearUserSession
 } from "../services/auth.services.js";
 import { loginUserSchema, registerUserSchema } from "../validators/auth.validator.js";
 
@@ -141,7 +141,11 @@ export const getProfilePage = (req, res) => {
 };
 
 // user Logout Page 
-export const userLogoutPage = (req, res) => {
+export const userLogoutPage = async (req, res) => {
+  await clearUserSession(req.user.sessionId);
+
   res.clearCookie("access_token");
-  res.redirect("/login")
+  res.clearCookie("refresh_token");
+
+  res.redirect("/login");
 };
