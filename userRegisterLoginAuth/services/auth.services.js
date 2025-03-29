@@ -6,6 +6,7 @@ import argon2 from "argon2";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import { ACCESS_TOKEN_EXPIRY, MILLISECONDS_PER_SECOND, REFRESH_TOKEN_EXPIRY } from "../config/constants.js";
+import { log } from "console";
 
 export const getUserByEmail = async (email) => {
   const [user] = await db
@@ -152,7 +153,7 @@ export const authenticateUser = async ({ req, res, user, name, email }) => {
 }
 
 // generateRandomToken
-export const generateRandomToken = async (digit = 8) => {
+export const generateRandomToken = (digit = 8) => {
   const min = 10 ** (digit - 1); // 10000000
   const max = 10 ** digit; // 100000000
 
@@ -161,15 +162,21 @@ export const generateRandomToken = async (digit = 8) => {
 
 // insertVerifyEmailToken
 export const insertVerifyEmailToken = async ({ userId, token }) => {
+  console.log("token", token);
 
-  // verifyEmailTokensTable check data userID in presint to delete all matching data
-  await db.delete(verifyEmailTokensTable)
-    .where(lt(verifyEmailTokensTable.expiresAt, sql`CURRENT_TIMESTAMP`));
+  try {
+    // verifyEmailTokensTable check data userID in presint to delete all matching data
+    await db.delete(verifyEmailTokensTable)
+      .where(lt(verifyEmailTokensTable.expiresAt, sql`CURRENT_TIMESTAMP`));
 
-  // insert Data in verifyEmailTokensTable
-  return await db.insert(verifyEmailTokensTable)
-    .values({ userId, token })
-    .$returningId();
+    // insert Data in verifyEmailTokensTable
+    await db.insert(verifyEmailTokensTable)
+      .values({ userId, token })
+      .$returningId();
+  } catch (error) {
+    console.log("error", error);
+  }
+
 }
 
 // createVerifyEmailLink
