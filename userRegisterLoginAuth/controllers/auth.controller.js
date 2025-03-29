@@ -2,9 +2,13 @@ import { ACCESS_TOKEN_EXPIRY, REFRESH_TOKEN_EXPIRY } from "../config/constants.j
 import {
   createUser, getUserByEmail, hashPassword, comparePassword,
   //  generateToken
-  createSession, createAccessToken, createRefreshToken, clearUserSession,
+  createSession, createAccessToken, createRefreshToken,
+  clearUserSession,
   authenticateUser,
-  findUserById
+  findUserById,
+  generateRandomToken,
+  insertVerifyEmailToken,
+  createVerifyEmailLink
 } from "../services/auth.services.js";
 import { getAllProductData } from "../services/product.services.js";
 import { loginUserSchema, registerUserSchema } from "../validators/auth.validator.js";
@@ -152,6 +156,23 @@ export const getVerifyEmailPage = async (req, res) => {
     email: req.user.email,
   });
 };
+
+// postResendVerificationLink
+export const postResendVerificationLink = async (req, res) => {
+
+  if (!req.user) return res.redirect("/");
+  const user = await findUserById(req.user.id);
+  if (!user || user.isEmailValid) return res.redirect("/");
+
+  const randomToken = generateRandomToken();
+
+  await insertVerifyEmailToken({ userId: req.user.id, token: randomToken })
+
+  const verifyEmailLink = await createVerifyEmailLink({
+    email: req.user.email,
+    token: randomToken,
+  })
+}
 
 // user Logout Page 
 export const userLogoutPage = async (req, res) => {

@@ -17,6 +17,8 @@ router.route("/login")
 router.route("/profile").get(authControllers.getProfilePage);
 
 router.route("/verify-email").get(authControllers.getVerifyEmailPage);
+// resend-verification-link
+router.route("/resend-verification-link").post(authControllers.postResendVerificationLink);
 
 router.route("/logout").get(authControllers.userLogoutPage);
 
