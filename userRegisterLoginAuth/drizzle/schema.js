@@ -1,4 +1,4 @@
-import { relations } from 'drizzle-orm';
+import { relations, sql } from 'drizzle-orm';
 import { boolean, text } from 'drizzle-orm/gel-core';
 import { int, mysqlTable, varchar } from 'drizzle-orm/mysql-core';
 import { timestamp } from 'drizzle-orm/pg-core';
@@ -18,6 +18,15 @@ export const sessionsTables = mysqlTable('sessions_table', {
   valid: boolean().default(true).notNull(),
   userAgent: text("user_agent"),
   ip: varchar({ length: 250 }),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().$onUpdate().notNull(),
+});
+
+export const verifyEmailTokensTable = mysqlTable('is_email_valid', {
+  id: int().autoincrement().primaryKey(),
+  userId: int("user_id").notNull().references(() => usersTable.id, { onDelete: "cascade" }), // userid sessions data auto delete a user doesn't exist
+  token: varchar({ length: 8 }).notNull(),
+  expiresAt: timestamp("expires_at").default(sql`(CURRENT_TIMESTAMP + INTERVAL 1 DAY)`).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().$onUpdate().notNull(),
 });
