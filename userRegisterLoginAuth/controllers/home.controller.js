@@ -106,3 +106,7 @@ export const deleteHomeProduct = async (req, res) => {
 export const getContact = (req, res) => {
   return res.render("Contact")
 };
+
+export const getAbout = (req, res) => {
+  return res.render("About")
+};

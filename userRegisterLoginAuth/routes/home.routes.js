@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getHome, getContact, postHomeProduct, getEditHomeProductPage, postEditHomeProductPage, deleteHomeProduct } from "../controllers/home.controller.js"
+import { getHome, getContact, getAbout, postHomeProduct, getEditHomeProductPage, postEditHomeProductPage, deleteHomeProduct } from "../controllers/home.controller.js"
 
 const router = Router();
 
@@ -15,7 +15,7 @@ router.route("/delete/:id").post(deleteHomeProduct);
 
 router.get("/contact", getContact);
 
-router.get("/about", (req, res) => res.send("About Page!"));
+router.get("/about", getAbout);
 
 // 404 Page Not Found (Use router.use to handle all methods)
 router.use((req, res) => {

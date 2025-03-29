@@ -19,7 +19,6 @@
 
     <main class="container profile-container">
       <h1 class="page-title">Your Profile</h1>
-
       <div class="user-status">
         <% if(user) { %>
           <div class="status-badge success">
@@ -33,7 +32,6 @@
             </div>
             <% } %>
       </div>
-
       <div class="profile-card">
         <div class="profile-header">
           <div class="profile-avatar">
@@ -56,7 +54,6 @@
             </p>
           </div>
         </div>
-
         <div class="profile-stats">
           <div class="stat-item">
             <span class="stat-value">
@@ -77,25 +74,25 @@
             <span class="stat-label">Last Active</span>
           </div>
         </div>
+        <div class="profile-verification">
+          <p class="verification-status">
+            <span class="verification-label">Email Verification:</span>
+            <% if (user.isEmailValid) { %>
+              <span class="verification-badge verified">
+                <i class="zmdi zmdi-check-circle"></i> Verified
+              </span>
+              <% } else { %>
+                <span class="verification-badge not-verified">
+                  <i class="zmdi zmdi-alert-circle"></i> Not Verified
+                </span>
+                <a href="/verify-email" class="verify-link">
+                  <i class="zmdi zmdi-mail-send"></i> Verify Now
+                </a>
+                <% } %>
+          </p>
+        </div>
       </div>
-      <div class="profile-verification">
-        <p class="verification-status">
-          <span class="verification-label">Email Verification:</span>
-          <% if (user.isEmailValid) { %>
-          <span class="verification-badge verified">
-            <i class="zmdi zmdi-check-circle"></i> Verified
-          </span>
-          <% } else { %>
-          <span class="verification-badge not-verified">
-            <i class="zmdi zmdi-alert-circle"></i> Not Verified
-          </span>
-          <a href="/verify-email" class="verify-link">
-            <i class="zmdi zmdi-mail-send"></i> Verify Now
-          </a>
-          <% } %>
-        </p>
       </div>
-    </div>
       <div class="profile-actions">
         <a href="/edit-profile" class="btn">
           <i class="zmdi zmdi-edit"></i> Edit Profile
