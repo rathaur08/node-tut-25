@@ -132,10 +132,25 @@ export const getProfilePage = async (req, res) => {
       name: user.name,
       email: user.email,
       isEmailValid: user.isEmailValid,
-      createdAt : user.createdAt,
+      createdAt: user.createdAt,
       products: userProducts,
     }
   })
+};
+
+// getVerifyEmailPage
+export const getVerifyEmailPage = async (req, res) => {
+  // if (!req.user || req.user.isEmailValid) return res.redirect("/");
+
+  if (!req.user) return res.redirect("/");
+
+  const user = await findUserById(req.user.id);
+
+  if (!user || user.isEmailValid) return res.redirect("/");
+
+  return res.render("auth/verifyEmail", {
+    email: req.user.email,
+  });
 };
 
 // user Logout Page 
