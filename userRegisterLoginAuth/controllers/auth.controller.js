@@ -9,10 +9,13 @@ import {
   findUserById,
   generateRandomToken,
   insertVerifyEmailToken,
-  createVerifyEmailLink
+  createVerifyEmailLink,
+  findVerificationEmailToken,
+  verifyUserEmailAndUpdate,
+  clearVerifyEmailToken
 } from "../services/auth.services.js";
 import { getAllProductData } from "../services/product.services.js";
-import { loginUserSchema, registerUserSchema } from "../validators/auth.validator.js";
+import { loginUserSchema, registerUserSchema, verifyEmailSchema } from "../validators/auth.validator.js";
 
 export const getRegisterPage = (req, res) => {
   if (req.user) return res.redirect("/");
@@ -186,6 +189,25 @@ export const postResendVerificationLink = async (req, res) => {
   }).catch(console.error);
 
   res.redirect("/verify-email");
+}
+
+// getVerifyEmailToken
+export const getVerifyEmailToken = async (req, res) => {
+
+  const { data, error } = verifyEmailSchema.safeParse(req.query)
+  if (error) {
+    return res.send("Verification link Invalid or expired!")
+  }
+
+  const token = await findVerificationEmailToken(data);
+  console.log("VerificationEmail -Token: ", token);
+  if (!token) res.send("Verification link invalid or expired!")
+
+  await verifyUserEmailAndUpdate(token.email);
+
+  clearVerifyEmailToken(token.email).catch(console.error)
+
+  return res.redirect("/profile");
 }
 
 // user Logout Page 
