@@ -1,61 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home page</title>
 
-    <!-- Font Icon -->
-    <link
-      rel="stylesheet"
-      href="fonts/material-icon/css/material-design-iconic-font.min.css"
-    />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home page</title>
 
-    <!-- Main css -->
-    <link rel="stylesheet" href="style.css" />
-  </head>
+  <!-- Font Icon -->
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/material-design-iconic-font@2.2.0/dist/css/material-design-iconic-font.min.css" />
 
-  <body>
-    <!-- added Navbar using ejs File -->
-    <%- include("./partials/Header") %> <% if (user) { %>
-    <h1>You are Logged In</h1>
-    <% } else { %>
-    <h1>You are Not Logged In</h1>
-    <% } %>
+  <!-- Main css -->
+  <link rel="stylesheet" href="style.css" />
+</head>
 
-    <h3>Home page</h3>
-    <h1>Product</h1>
-    <form action="/" method="post">
-      <div>
-        <label for="product_name">Enter product name:</label>
-        <br />
-        <input type="text" name="product_name" id="product_name" required />
+<body>
+  <!-- added Navbar using ejs File -->
+  <%- include("./partials/Header") %>
+    <% if (user) { %>
+      <div class="old-container">
+
+        <h1>You are Logged In</h1>
+        <% } else { %>
+          <h1>You are Not Logged In</h1>
+          <% } %>
+
+            <h3>Home page</h3>
+            <h1>Product</h1>
+            <form action="/" method="post">
+              <div>
+                <label for="product_name">Enter product name:</label>
+                <br />
+                <input type="text" name="product_name" id="product_name" required />
+              </div>
+              <div>
+                <label for="product_value">Enter product value: ex: 5,12</label>
+                <br />
+                <input type="text" name="product_value" id="product_value" required />
+              </div>
+              <br />
+              <% if (errors && errors.length> 0) { %> <% errors.forEach((error)=> { %>
+                  <p class="flash-error">
+                    <%= error %>
+                  </p>
+                  <% }); %>
+                    <% } %>
+                      <button type="submit">Submit</button>
+            </form>
+            <h1 style="text-align: center">Product Table</h1>
+            <div style="display: flex; justify-content: center; flex-wrap: wrap">
+              <% product.map((data)=>{ %>
+                <div style="border: 1px solid black; margin: 5px; padding: 5px">
+                  <p>Product Name : <%= data.product_name %>
+                  </p>
+                  <p>Product Value : <%= data.product_value %>
+                  </p>
+                  <button type="submit">
+                    <a href="/edit/<%= data.id %>">Edit</a>
+                  </button>
+                  <form action="/delete/<%= data.id %>" method="post">
+                    <button>Delete</button>
+                  </form>
+                </div>
+                <% }) %>
+            </div>
       </div>
-      <div>
-        <label for="product_value">Enter product value: ex: 5,12</label>
-        <br />
-        <input type="text" name="product_value" id="product_value" required />
-      </div>
-      <br />
-      <% if (errors && errors.length> 0) { %> <% errors.forEach((error)=> { %>
-      <p class="flash-error"><%= error %></p>
-      <% }); %> <% } %>
-      <button type="submit">Submit</button>
-    </form>
-    <h1 style="text-align: center">Product Table</h1>
-    <div style="display: flex; justify-content: center; flex-wrap: wrap">
-      <% product.map((data)=>{ %>
-      <div style="border: 1px solid black; margin: 5px; padding: 5px">
-        <p>Product Name : <%= data.product_name %></p>
-        <p>Product Value : <%= data.product_value %></p>
-        <button type="submit">
-          <a href="/edit/<%= data.id %>">Edit</a>
-        </button>
-        <form action="/delete/<%= data.id %>" method="post">
-          <button>Delete</button>
-        </form>
-      </div>
-      <% }) %>
-    </div>
-  </body>
+</body>
+
 </html>
