@@ -244,8 +244,8 @@ export const verifyUserEmailAndUpdate = async (email) => {
 }
 
 // clearVerifyEmailToken
-export const clearVerifyEmailToken = async (email) => {
-  const [user] = await db.select().from(usersTable).where(eq(usersTable.email, email))
+export const clearVerifyEmailToken = async (userId) => {
+  // const [user] = await db.select().from(usersTable).where(eq(usersTable.email, email))
 
-  return await db.delete(verifyEmailTokensTable).where(eq(verifyEmailTokensTable.userId, user.id));
+  return await db.delete(verifyEmailTokensTable).where(eq(verifyEmailTokensTable.userId, userId));
 }
