@@ -1,70 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home page</title>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Home page</title>
+    <!-- Font Icon -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/material-design-iconic-font@2.2.0/dist/css/material-design-iconic-font.min.css"
+    />
 
-  <!-- Font Icon -->
-  <link rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/material-design-iconic-font@2.2.0/dist/css/material-design-iconic-font.min.css" />
+    <!-- Main css -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-  <!-- Main css -->
-  <link rel="stylesheet" href="style.css" />
-</head>
-
-<body>
-  <!-- added Navbar using ejs File -->
-  <%- include("./partials/Header") %>
-    <% if (user) { %>
-      <div class="old-container">
-
-        <h1>You are Logged In</h1>
-        <% } else { %>
-          <h1>You are Not Logged In</h1>
-          <% } %>
-
-            <h3>Home page</h3>
-            <h1>Product</h1>
-            <form action="/" method="post">
-              <div>
-                <label for="product_name">Enter product name:</label>
-                <br />
-                <input type="text" name="product_name" id="product_name" required />
+  <body>
+    <!-- added Navbar using ejs File -->
+    <%- include("./partials/Header") %>
+    <div class="main">
+      <section class="url-shortener">
+        <div class="container">
+          <div class="shortener-content">
+            <div class="user-status">
+              <% if(user) { %>
+              <div class="status-badge success">
+                <i class="zmdi zmdi-check-circle"></i>
+                <span>You are logged in</span>
               </div>
-              <div>
-                <label for="product_value">Enter product value: ex: 5,12</label>
-                <br />
-                <input type="text" name="product_value" id="product_value" required />
+              <% } else { %>
+              <div class="status-badge warning">
+                <i class="zmdi zmdi-alert-circle"></i>
+                <span>You are not logged in</span>
               </div>
-              <br />
-              <% if (errors && errors.length> 0) { %> <% errors.forEach((error)=> { %>
-                  <p class="flash-error">
-                    <%= error %>
-                  </p>
-                  <% }); %>
-                    <% } %>
-                      <button type="submit">Submit</button>
-            </form>
-            <h1 style="text-align: center">Product Table</h1>
-            <div style="display: flex; justify-content: center; flex-wrap: wrap">
-              <% product.map((data)=>{ %>
-                <div style="border: 1px solid black; margin: 5px; padding: 5px">
-                  <p>Product Name : <%= data.product_name %>
-                  </p>
-                  <p>Product Value : <%= data.product_value %>
-                  </p>
-                  <button type="submit">
-                    <a href="/edit/<%= data.id %>">Edit</a>
-                  </button>
-                  <form action="/delete/<%= data.id %>" method="post">
-                    <button>Delete</button>
-                  </form>
-                </div>
-                <% }) %>
+              <% } %>
             </div>
-      </div>
-</body>
 
+            <div class="shortener-form">
+              <h1 class="form-title">ADD Product</h1>
+              <form action="/" method="post" class="url-form" id="url-form">
+                <div class="form-group">
+                  <label for="url">
+                    <i class="zmdi zmdi-link"></i>
+                  </label>
+                  <input
+                    type="text"
+                    name="product_name"
+                    id="product_name"
+                    autocomplete="off"
+                    placeholder="Enter Product Name"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="shortCode">
+                    <i class="zmdi zmdi-code"></i>
+                  </label>
+                  <input
+                    type="text"
+                    name="product_value"
+                    id="product_value"
+                    autocomplete="off"
+                    placeholder="Enter Product value: ex: 5,12"
+                  />
+                </div>
+
+                <% if ((errors && errors.length> 0)) { %> <%
+                errors.forEach((error)=> { %>
+                <p class="flash-error"><%= error %></p>
+                <% }); %> <% } %>
+
+                <div class="form-group form-button">
+                  <input type="submit" class="form-submit" value="Submit" />
+                </div>
+              </form>
+            </div>
+
+            <div class="shortened-urls">
+              <h2 class="section-title">Product List</h2>
+              <% if(product && product.length> 0) { %>
+              <ul class="url-list">
+                <% let i=1 %> <% product.map(({product_name, product_value,
+                id})=> { %>
+                <li class="url-item">
+                  <div class="url-info">
+                    <span class="original-url">No. <%= i++ %></span>
+                    Product Name : <%= product_name %>
+                    <span class="original-url">
+                      Product Value : <%= product_value %>
+                    </span>
+                  </div>
+                  <div class="url-actions">
+                    <button class="copy-btn edit-btn">
+                      <a href="/edit/<%= id %>">
+                        <i class="zmdi zmdi-edit"></i>
+                      </a>
+                    </button>
+
+                    <form action="/delete/<%= id %>" method="post">
+                      <button class="copy-btn edit-btn">
+                        <i class="zmdi zmdi-delete"></i>
+                      </button>
+                    </form>
+                  </div>
+                </li>
+                <% }) %>
+              </ul>
+              <% } else { %>
+              <p class="empty-list">
+                No Product Items yet. Create your first one above!
+              </p>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- old-container -->
+    <div class="old-container">
+      <h1>Product</h1>
+      <form action="/" method="post">
+        <div>
+          <label for="product_name">Enter product name:</label>
+          <br />
+          <input type="text" name="product_name" id="product_name" required />
+        </div>
+        <div>
+          <label for="product_value">Enter product value: ex: 5,12</label>
+          <br />
+          <input type="text" name="product_value" id="product_value" required />
+        </div>
+
+        <button type="submit">Submit</button>
+      </form>
+      <h1 style="text-align: center">Product Table</h1>
+      <div style="display: flex; justify-content: center; flex-wrap: wrap">
+        <% product.map((data)=>{ %>
+        <div style="border: 1px solid black; margin: 5px; padding: 5px">
+          <p>Product Name : <%= data.product_name %></p>
+          <p>Product Value : <%= data.product_value %></p>
+          <button type="submit">
+            <a href="/edit/<%= data.id %>">Edit</a>
+          </button>
+          <form action="/delete/<%= data.id %>" method="post">
+            <button>Delete</button>
+          </form>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+  </body>
 </html>
