@@ -199,7 +199,9 @@ export const getVerifyEmailToken = async (req, res) => {
     return res.send("Verification link Invalid or expired!")
   }
 
-  const token = await findVerificationEmailToken(data);
+  // const token = await findVerificationEmailToken(data); // without join code
+  const [token] = await findVerificationEmailToken(data); // with join code
+
   console.log("VerificationEmail -Token: ", token);
   if (!token) res.send("Verification link invalid or expired!")
 

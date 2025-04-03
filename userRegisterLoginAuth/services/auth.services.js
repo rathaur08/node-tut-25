@@ -201,41 +201,65 @@ export const createVerifyEmailLink = async ({ email, token }) => {
 }
 
 // findVerificationEmailToken
+// export const findVerificationEmailToken = async ({ email, token }) => {
+
+//   const tokenData = await db.select({
+//     userId: verifyEmailTokensTable.userId,
+//     token: verifyEmailTokensTable.token,
+//     expiresAt: verifyEmailTokensTable.expiresAt,
+//   }).from(verifyEmailTokensTable)
+//     .where(
+//       and(
+//         eq(verifyEmailTokensTable.token, token),
+//         gte(verifyEmailTokensTable.expiresAt, sql`CURRENT_TIMESTAMP`)
+//       )
+//     );
+
+//   if (!tokenData.length) {
+//     return null;
+//   }
+
+//   const { userId } = tokenData[0];
+
+//   const userData = await db.select({
+//     userId: usersTable.id,
+//     email: usersTable.email,
+//   }).from(usersTable).where(eq(usersTable.id, userId))
+
+//   if (!userData.length) {
+//     return null;
+//   }
+
+//   return {
+//     userId: userData[0].userId,
+//     email: userData[0].email,
+//     token: userData[0].token,
+//     expiresAt: userData[0].expiresAt,
+//   };
+// }
+
+// findVerificationEmailToken
 export const findVerificationEmailToken = async ({ email, token }) => {
 
-  const tokenData = await db.select({
-    userId: verifyEmailTokensTable.userId,
+  return await db.select({
+    // userId: verifyEmailTokensTable.userId,
     token: verifyEmailTokensTable.token,
     expiresAt: verifyEmailTokensTable.expiresAt,
+    userId: usersTable.id,
+    email: usersTable.email,
   }).from(verifyEmailTokensTable)
     .where(
       and(
         eq(verifyEmailTokensTable.token, token),
+        (eq(usersTable.email, email)),
         gte(verifyEmailTokensTable.expiresAt, sql`CURRENT_TIMESTAMP`)
       )
-    );
+    ).innerJoin(usersTable, eq(verifyEmailTokensTable.userId, usersTable.id))
 
   if (!tokenData.length) {
     return null;
   }
 
-  const { userId } = tokenData[0];
-
-  const userData = await db.select({
-    userId: usersTable.id,
-    email: usersTable.email,
-  }).from(usersTable).where(eq(usersTable.id, userId))
-
-  if (!userData.length) {
-    return null;
-  }
-
-  return {
-    userId: userData[0].userId,
-    email: userData[0].email,
-    token: userData[0].token,
-    expiresAt: userData[0].expiresAt,
-  };
 }
 
 // verifyUserEmailAndUpdate
