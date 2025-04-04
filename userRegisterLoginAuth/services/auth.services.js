@@ -8,6 +8,10 @@ import crypto from "crypto";
 import { ACCESS_TOKEN_EXPIRY, MILLISECONDS_PER_SECOND, REFRESH_TOKEN_EXPIRY } from "../config/constants.js";
 import { log } from "console";
 import { sendEmail } from "../lib/nodemailer.js";
+import path from "path";
+import fs from "fs/promises";
+import mjml2html from "mjml";
+import ejs from "ejs";
 
 export const getUserByEmail = async (email) => {
   const [user] = await db
@@ -276,7 +280,7 @@ export const clearVerifyEmailToken = async (userId) => {
 }
 
 // sendNewVerifyEmailLink
-export const sendNewVerifyEmailLink = async ({userId, email}) => {
+export const sendNewVerifyEmailLink = async ({ userId, email }) => {
   const randomToken = generateRandomToken();
 
   await insertVerifyEmailToken({ userId, token: randomToken })
@@ -286,17 +290,27 @@ export const sendNewVerifyEmailLink = async ({userId, email}) => {
     token: randomToken,
   })
 
-  // 
-  
+  // 1. to get the file data
+  const mjmlTemplate = await fs.readFile(
+    path.join(import.meta.dirname, "..", "emails", "verify-email.mjml"),
+    "utf-8"
+  );
+
+  // 2. to replace the placeholders with the actual values
+  const filledTemplate = ejs.render(mjmlTemplate, {
+    code: randomToken,
+    link: verifyEmailLink,
+  })
+
+  // 3. to convert mjml to html
+  const htmlOutput = mjml2html(filledTemplate).html;
+
+
   sendEmail({
     to: email,
     subject: "Verify your email", // Subject line
     // text: "Hello world?", // plain text body
-    html: `
-  <h1>Click the link below to verify your email.</h1>
-  <p> You can use this token: <code>${randomToken} </code> </p>
-  <a href="${verifyEmailLink}">Verify Email </a>
-  `, // html body
+    html: htmlOutput, // html body
   }).catch(console.error);
 
 }
