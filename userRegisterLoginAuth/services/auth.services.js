@@ -7,11 +7,12 @@ import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import { ACCESS_TOKEN_EXPIRY, MILLISECONDS_PER_SECOND, REFRESH_TOKEN_EXPIRY } from "../config/constants.js";
 import { log } from "console";
-import { sendEmail } from "../lib/nodemailer.js";
+// import { sendEmail } from "../lib/nodemailer.js";
 import path from "path";
 import fs from "fs/promises";
 import mjml2html from "mjml";
 import ejs from "ejs";
+import { sendEmail } from "../lib/send-email.js";
 
 export const getUserByEmail = async (email) => {
   const [user] = await db
@@ -246,7 +247,7 @@ export const createVerifyEmailLink = async ({ email, token }) => {
 // findVerificationEmailToken
 export const findVerificationEmailToken = async ({ email, token }) => {
 
-  return await db.select({
+  return db.select({
     // userId: verifyEmailTokensTable.userId,
     token: verifyEmailTokensTable.token,
     expiresAt: verifyEmailTokensTable.expiresAt,
@@ -304,7 +305,6 @@ export const sendNewVerifyEmailLink = async ({ userId, email }) => {
 
   // 3. to convert mjml to html
   const htmlOutput = mjml2html(filledTemplate).html;
-
 
   sendEmail({
     to: email,

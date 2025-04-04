@@ -5,8 +5,8 @@ PORT=3000
 DATABASE_URL=mysql://root:password@localhost:3306/nodejs_tut25
 JWT_SECRET=rathaur08
 FRONTEND_URL=http://localhost:3000
+RESEND_API_KEY=re_ZueH3u1k_Q1EDdenADesq5oLDQrQDN6dw
 
 END Code .env File Code -->
-
 
 Other File Code -->
