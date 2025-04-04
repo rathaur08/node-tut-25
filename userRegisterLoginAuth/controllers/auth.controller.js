@@ -12,7 +12,8 @@ import {
   createVerifyEmailLink,
   findVerificationEmailToken,
   verifyUserEmailAndUpdate,
-  clearVerifyEmailToken
+  clearVerifyEmailToken,
+  sendNewVerifyEmailLink
 } from "../services/auth.services.js";
 import { getAllProductData } from "../services/product.services.js";
 import { loginUserSchema, registerUserSchema, verifyEmailSchema } from "../validators/auth.validator.js";
@@ -58,6 +59,8 @@ export const postRegister = async (req, res) => {
 
   // write a code Users Logged In After Registration 
   await authenticateUser({ req, res, user, name, email })
+
+  await sendNewVerifyEmailLink({ email, userId: user.id });
 
   res.redirect("/")
 };
@@ -168,25 +171,7 @@ export const postResendVerificationLink = async (req, res) => {
   const user = await findUserById(req.user.id);
   if (!user || user.isEmailValid) return res.redirect("/");
 
-  const randomToken = generateRandomToken();
-
-  await insertVerifyEmailToken({ userId: req.user.id, token: randomToken })
-
-  const verifyEmailLink = await createVerifyEmailLink({
-    email: req.user.email,
-    token: randomToken,
-  })
-
-  sendEmail({
-    to: req.user.email,
-    subject: "Verify your email", // Subject line
-    // text: "Hello world?", // plain text body
-    html: `
-    <h1>Click the link below to verify your email.</h1>
-    <p> You can use this token: <code>${randomToken} </code> </p>
-    <a href="${verifyEmailLink}">Verify Email </a>
-    `, // html body
-  }).catch(console.error);
+  await sendNewVerifyEmailLink({ email: req.user.email, userId: req.user.id });
 
   res.redirect("/verify-email");
 }

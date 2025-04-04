@@ -7,6 +7,7 @@ import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import { ACCESS_TOKEN_EXPIRY, MILLISECONDS_PER_SECOND, REFRESH_TOKEN_EXPIRY } from "../config/constants.js";
 import { log } from "console";
+import { sendEmail } from "../lib/nodemailer.js";
 
 export const getUserByEmail = async (email) => {
   const [user] = await db
@@ -272,4 +273,30 @@ export const clearVerifyEmailToken = async (userId) => {
   // const [user] = await db.select().from(usersTable).where(eq(usersTable.email, email))
 
   return await db.delete(verifyEmailTokensTable).where(eq(verifyEmailTokensTable.userId, userId));
+}
+
+// sendNewVerifyEmailLink
+export const sendNewVerifyEmailLink = async ({userId, email}) => {
+  const randomToken = generateRandomToken();
+
+  await insertVerifyEmailToken({ userId, token: randomToken })
+
+  const verifyEmailLink = await createVerifyEmailLink({
+    email,
+    token: randomToken,
+  })
+
+  // 
+  
+  sendEmail({
+    to: email,
+    subject: "Verify your email", // Subject line
+    // text: "Hello world?", // plain text body
+    html: `
+  <h1>Click the link below to verify your email.</h1>
+  <p> You can use this token: <code>${randomToken} </code> </p>
+  <a href="${verifyEmailLink}">Verify Email </a>
+  `, // html body
+  }).catch(console.error);
+
 }
