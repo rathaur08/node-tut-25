@@ -190,7 +190,7 @@ export const insertVerifyEmailToken = ({ userId, token }) => {
       await tx.insert(verifyEmailTokensTable).values({ userId, token });
 
     } catch (error) {
-      console.log("verify Email Tokens error", error);
+      console.error("verify Email Tokens error", error);
     }
 
   })

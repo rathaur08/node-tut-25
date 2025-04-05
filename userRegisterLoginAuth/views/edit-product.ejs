@@ -1,48 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Edit Product</title>
-      <!-- Font Icon -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/material-design-iconic-font@2.2.0/dist/css/material-design-iconic-font.min.css" />
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Product</title>
+  <!-- Font Icon -->
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/material-design-iconic-font@2.2.0/dist/css/material-design-iconic-font.min.css" />
 
   <!-- Main css -->
-  <link rel="stylesheet" href="style.css" />
-  </head>
+  <link rel="stylesheet" href="/style.css" />
+</head>
 
-  <body>
-    <!-- added Navbar using ejs File -->
-    <!-- <%- include("./partials/Header") %> -->
+<body>
+   <!-- added Navbar using ejs File -->
+   <%- include("./partials/Header") %>
+
     <h3>Edit Product</h3>
     <form action="/edit/<%= id %>" method="post">
       <div>
         <label for="product_name">Enter product name:</label>
         <br />
-        <input
-          type="text"
-          name="product_name"
-          id="product_name"
-          value="<%= product_name %>"
-          required
-        />
+        <input type="text" name="product_name" id="product_name" value="<%= product_name %>" required />
       </div>
       <div>
         <label for="product_value">Enter product value: ex: 5,12</label>
         <br />
-        <input
-          type="text"
-          name="product_value"
-          id="product_value"
-          value="<%= product_value %>"
-          required
-        />
+        <input type="text" name="product_value" id="product_value" value="<%= product_value %>" required />
       </div>
       <br />
       <% if (errors && errors.length> 0) { %> <% errors.forEach((error)=> { %>
-      <p class="flash-error"><%= error %></p>
-      <% }); %> <% } %>
-      <button type="submit">Update</button>
+          <p class="flash-error">
+            <%= error %>
+          </p>
+          <% }); %>
+            <% } %>
+              <button type="submit">Update</button>
     </form>
-  </body>
+
+    <!-- added Navbar using ejs File -->
+    <%- include("./partials/Footer") %>
+    
+</body>
+
 </html>

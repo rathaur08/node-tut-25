@@ -33,19 +33,19 @@ export const postRegister = async (req, res) => {
   // const { name, age, email, password } = req.body;
 
   const { data, error } = registerUserSchema.safeParse(req.body);
-  console.log(data);
+  // console.log(data);
 
   if (error) {
     const errors = error.errors[0].message;
     req.flash("errors", errors);
-    console.log("error", error);
+    console.error("error", error);
     res.redirect("/register");
   }
 
   const { name, age, email, password } = data;
 
   const userExists = await getUserByEmail(email);
-  console.log("userExists", userExists);
+  // console.log("userExists", userExists);
 
   // if (userExists) return res.redirect("/register");
   if (userExists) {
@@ -78,19 +78,19 @@ export const postLogin = async (req, res) => {
   // const { email, password } = req.body;
 
   const { data, error } = loginUserSchema.safeParse(req.body);
-  console.log(data);
+  // console.log(data);
 
   if (error) {
     const errors = error.errors[0].message;
     req.flash("errors", errors);
-    console.log("error", error);
+    // console.error("error", error);
     res.redirect("/login");
   }
 
   const { email, password } = data;
 
   const user = await getUserByEmail(email);
-  console.log("user", user);
+  // console.log("user", user);
 
   // if (!user) return res.redirect("/login");
   if (!user) {
@@ -177,7 +177,7 @@ export const postEditProfilePage = async (req, res) => {
   if (error) {
     const errorMessages = error.errors.map((err) => err.message);
     req.flash("errors", errorMessages);
-    console.log("error", errorMessages);
+    console.error("error", errorMessages);
     res.redirect("/edit-profile");
   }
 
@@ -225,7 +225,7 @@ export const getVerifyEmailToken = async (req, res) => {
   // const token = await findVerificationEmailToken(data); // without join code
   const [token] = await findVerificationEmailToken(data); // with join code
 
-  console.log("VerificationEmail -Token: ", token);
+  // console.log("VerificationEmail -Token: ", token);
   if (!token) res.send("Verification link invalid or expired!")
 
   await verifyUserEmailAndUpdate(token.email);

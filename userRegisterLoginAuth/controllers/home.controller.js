@@ -20,11 +20,11 @@ export const postHomeProduct = async (req, res) => {
 
   if (!req.user) return res.redirect("/login");
 
-  console.log("postHomeProduct ", req.body);
+  // console.log("postHomeProduct ", req.body);
   const { product_name, product_value } = req.body;
 
   const [product] = await createProduct({ product_name, product_value, userId: req.user.id })
-  console.log("Create product", product);
+  // console.log("Create product", product);
 
   if (product) {
     req.flash(

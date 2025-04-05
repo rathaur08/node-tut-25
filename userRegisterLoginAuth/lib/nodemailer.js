@@ -21,6 +21,6 @@ export const sendEmail = async ({ to, subject, html }) => {
   })
 
   const testEmailURL = nodemailer.getTestMessageUrl(info);
-  console.log("verify Email: ", testEmailURL);
+  // console.log("verify Email: ", testEmailURL);
 
 }

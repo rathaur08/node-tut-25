@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home page</title>
+    <link rel="icon" href="https://d3tfanr7troppj.cloudfront.net/static_files/images/000/006/304/original/JetSetGo_New_Favicon.png?1733138127" type="image/svg+xml/png" />
+    <title>Home</title>
 
     <!-- Font Icon -->
     <link
@@ -117,38 +118,7 @@
       </section>
     </div>
 
-    <!-- old-container -->
-    <div class="old-container">
-      <h1>Product</h1>
-      <form action="/" method="post">
-        <div>
-          <label for="product_name">Enter product name:</label>
-          <br />
-          <input type="text" name="product_name" id="product_name" required />
-        </div>
-        <div>
-          <label for="product_value">Enter product value: ex: 5,12</label>
-          <br />
-          <input type="text" name="product_value" id="product_value" required />
-        </div>
-
-        <button type="submit">Submit</button>
-      </form>
-      <h1 style="text-align: center">Product Table</h1>
-      <div style="display: flex; justify-content: center; flex-wrap: wrap">
-        <% product.map((data)=>{ %>
-        <div style="border: 1px solid black; margin: 5px; padding: 5px">
-          <p>Product Name : <%= data.product_name %></p>
-          <p>Product Value : <%= data.product_value %></p>
-          <button type="submit">
-            <a href="/edit/<%= data.id %>">Edit</a>
-          </button>
-          <form action="/delete/<%= data.id %>" method="post">
-            <button>Delete</button>
-          </form>
-        </div>
-        <% }) %>
-      </div>
-    </div>
+        <!-- added Navbar using ejs File -->
+        <%- include("./partials/Footer") %>
   </body>
 </html>
