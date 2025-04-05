@@ -6,7 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Verify Email Page</title>
   <!-- Font Icon -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/material-design-iconic-font@2.2.0/dist/css/material-design-iconic-font.min.css" />
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/material-design-iconic-font@2.2.0/dist/css/material-design-iconic-font.min.css" />
 
   <!-- Main css -->
   <link rel="stylesheet" href="style.css" />
@@ -52,13 +53,14 @@
         <div class="card-body">
           <form action="/verify-email-token" method="get" class="form">
             <div class="form-group">
-              <label for="token" class="control-label">Enter 8-Digit Verification Code:</label>
-              <input type="text" name="token" id="token" class="form-control" maxlength="8" required pattern="\d{8}"
-                title="Please enter an 8-digit number" />
+              <label for="token">
+                <i class="zmdi zmdi-code"></i>
+              </label>
+              <input type="text" name="token" id="token" maxlength="8" autocomplete="off" required pattern="\d{8}"
+                placeholder="Please enter an 8-digit number" />
             </div>
 
-            <input type="hidden" value="<%= email %>" name="email" />
-            
+            <input type="hidden" value="<%= email %>" name="email" autocomplete="off" required />
             <button type="submit" class="btn btn-primary">Verify Code</button>
           </form>
         </div>

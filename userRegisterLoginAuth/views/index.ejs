@@ -1,124 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="https://d3tfanr7troppj.cloudfront.net/static_files/images/000/006/304/original/JetSetGo_New_Favicon.png?1733138127" type="image/svg+xml/png" />
-    <title>Home</title>
 
-    <!-- Font Icon -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/material-design-iconic-font@2.2.0/dist/css/material-design-iconic-font.min.css"
-    />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon"
+    href="https://d3tfanr7troppj.cloudfront.net/static_files/images/000/006/304/original/JetSetGo_New_Favicon.png?1733138127"
+    type="image/svg+xml/png" />
+  <title>Home</title>
 
-    <!-- Main css -->
-    <link rel="stylesheet" href="style.css" />
-  </head>
+  <!-- Font Icon -->
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/material-design-iconic-font@2.2.0/dist/css/material-design-iconic-font.min.css" />
 
-  <body>
-    <!-- added Navbar using ejs File -->
-    <%- include("./partials/Header") %>
+  <!-- Main css -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <!-- added Navbar using ejs File -->
+  <%- include("./partials/Header") %>
     <div class="main">
       <section class="url-shortener">
         <div class="container">
           <div class="shortener-content">
             <div class="user-status">
               <% if(user) { %>
-              <div class="status-badge success">
-                <i class="zmdi zmdi-check-circle"></i>
-                <span>You are logged in</span>
-              </div>
-              <% } else { %>
-              <div class="status-badge warning">
-                <i class="zmdi zmdi-alert-circle"></i>
-                <span>You are not logged in</span>
-              </div>
-              <% } %>
+                <div class="status-badge success">
+                  <i class="zmdi zmdi-check-circle"></i>
+                  <span>You are logged in</span>
+                </div>
+                <% } else { %>
+                  <div class="status-badge warning">
+                    <i class="zmdi zmdi-alert-circle"></i>
+                    <span>You are not logged in</span>
+                  </div>
+                  <% } %>
             </div>
 
             <div class="shortener-form">
               <h1 class="form-title">ADD Product</h1>
               <form action="/" method="post" class="url-form" id="url-form">
                 <div class="form-group">
-                  <label for="url">
+                  <label for="product_name">
                     <i class="zmdi zmdi-link"></i>
                   </label>
-                  <input
-                    type="text"
-                    name="product_name"
-                    id="product_name"
-                    autocomplete="off"
-                    placeholder="Enter Product Name"
-                    required
-                  />
+                  <input type="text" name="product_name" id="product_name" autocomplete="off"
+                    placeholder="Enter Product Name" required />
                 </div>
                 <div class="form-group">
-                  <label for="shortCode">
+                  <label for="product_value">
                     <i class="zmdi zmdi-code"></i>
                   </label>
-                  <input
-                    type="text"
-                    name="product_value"
-                    id="product_value"
-                    autocomplete="off"
-                    placeholder="Enter Product value: ex: 5,12"
-                  />
+                  <input type="text" name="product_value" id="product_value" autocomplete="off"
+                    placeholder="Enter Product value: ex: 5,12" />
                 </div>
 
-                <% if ((errors && errors.length> 0)) { %> <%
-                errors.forEach((error)=> { %>
-                <p class="flash-error"><%= error %></p>
-                <% }); %> <% } %>
+                <% if ((errors && errors.length> 0)) { %> <% errors.forEach((error)=> { %>
+                    <p class="flash-error">
+                      <%= error %>
+                    </p>
+                    <% }); %>
+                      <% } %>
 
-                <div class="form-group form-button">
-                  <input type="submit" class="form-submit" value="Submit" />
-                </div>
+                        <div class="form-group form-button">
+                          <input type="submit" class="form-submit" value="Submit" />
+                        </div>
               </form>
             </div>
 
             <div class="shortened-urls">
               <h2 class="section-title">Product List</h2>
               <% if(product && product.length> 0) { %>
-              <ul class="url-list">
-                <% let i=1 %> <% product.map(({product_name, product_value,
-                id})=> { %>
-                <li class="url-item">
-                  <div class="url-info">
-                    <span class="original-url">No. <%= i++ %></span>
-                    Product Name : <%= product_name %>
-                    <span class="original-url">
-                      Product Value : <%= product_value %>
-                    </span>
-                  </div>
-                  <div class="url-actions">
-                    <button class="copy-btn edit-btn">
-                      <a href="/edit/<%= id %>">
-                        <i class="zmdi zmdi-edit"></i>
-                      </a>
-                    </button>
+                <ul class="url-list">
+                  <% let i=1 %>
+                    <% product.map(({product_name, product_value, id})=> { %>
+                      <li class="url-item">
+                        <div class="url-info">
+                          <span class="original-url">No. <%= i++ %></span>
+                          Product Name : <%= product_name %>
+                            <span class="original-url">
+                              Product Value : <%= product_value %>
+                            </span>
+                        </div>
+                        <div class="url-actions">
+                          <button class="copy-btn edit-btn">
+                            <a href="/edit/<%= id %>">
+                              <i class="zmdi zmdi-edit"></i>
+                            </a>
+                          </button>
 
-                    <form action="/delete/<%= id %>" method="post">
-                      <button class="copy-btn edit-btn">
-                        <i class="zmdi zmdi-delete"></i>
-                      </button>
-                    </form>
-                  </div>
-                </li>
-                <% }) %>
-              </ul>
-              <% } else { %>
-              <p class="empty-list">
-                No Product Items yet. Create your first one above!
-              </p>
-              <% } %>
+                          <form action="/delete/<%= id %>" method="post">
+                            <button class="copy-btn edit-btn">
+                              <i class="zmdi zmdi-delete"></i>
+                            </button>
+                          </form>
+                        </div>
+                      </li>
+                      <% }) %>
+                </ul>
+                <% } else { %>
+                  <p class="empty-list">
+                    No Product Items yet. Create your first one above!
+                  </p>
+                  <% } %>
             </div>
           </div>
         </div>
       </section>
     </div>
 
-        <!-- added Navbar using ejs File -->
-        <%- include("./partials/Footer") %>
-  </body>
+    <!-- added Navbar using ejs File -->
+    <%- include("./partials/Footer") %>
+</body>
+
 </html>

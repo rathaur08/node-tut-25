@@ -4,44 +4,72 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Edit Product</title>
-  <!-- Font Icon -->
+  <link rel="stylesheet" href="/style.css" />
+  <!-- ZMDI Material Design Iconic Font CDN -->
   <link rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/material-design-iconic-font@2.2.0/dist/css/material-design-iconic-font.min.css" />
-
-  <!-- Main css -->
-  <link rel="stylesheet" href="/style.css" />
+  <title>Edit Product</title>
 </head>
 
 <body>
-   <!-- added Navbar using ejs File -->
-   <%- include("./partials/Header") %>
+  <!-- added Navbar using ejs File -->
+  <%- include("./partials/Header") %>
 
-    <h3>Edit Product</h3>
-    <form action="/edit/<%= id %>" method="post">
-      <div>
-        <label for="product_name">Enter product name:</label>
-        <br />
-        <input type="text" name="product_name" id="product_name" value="<%= product_name %>" required />
-      </div>
-      <div>
-        <label for="product_value">Enter product value: ex: 5,12</label>
-        <br />
-        <input type="text" name="product_value" id="product_value" value="<%= product_value %>" required />
-      </div>
-      <br />
-      <% if (errors && errors.length> 0) { %> <% errors.forEach((error)=> { %>
-          <p class="flash-error">
-            <%= error %>
-          </p>
-          <% }); %>
-            <% } %>
-              <button type="submit">Update</button>
-    </form>
+    <div class="main">
+      <section class="url-shortener">
+        <div class="container">
+          <div class="shortener-content">
+            <div class="user-status">
+              <% if(user) { %>
+                <div class="status-badge success">
+                  <i class="zmdi zmdi-check-circle"></i>
+                  <span>You are logged in</span>
+                </div>
+                <% } else { %>
+                  <div class="status-badge warning">
+                    <i class="zmdi zmdi-alert-circle"></i>
+                    <span>You are not logged in</span>
+                  </div>
+                  <% } %>
+            </div>
+
+            <div class="shortener-form">
+              <h1 class="form-title">Update Product</h1>
+              <form action="/edit/<%= id  %>" method="post" class="url-form" id="url-form">
+                <div class="form-group">
+                  <label for="product_name">
+                    <i class="zmdi zmdi-link"></i>
+                  </label>
+                  <input type="text" name="product_name" id="product_name" placeholder="Enter Product Name"
+                    value="<%= product_name  %>" autocomplete="off" required />
+                </div>
+                <div class="form-group">
+                  <label for="product_value">
+                    <i class="zmdi zmdi-code"></i>
+                  </label>
+                  <input type="text" name="product_value" id="product_value" value="<%= product_value  %>"
+                    autocomplete="off" placeholder="Enter product value: ex: 5,12" required />
+                </div>
+
+                <% if ((errors && errors.length> 0)) { %> <% errors.forEach((error)=> { %>
+                    <p class="flash-error">
+                      <%= error %>
+                    </p>
+                    <% }); %>
+                      <% } %>
+
+                        <div class="form-group form-button">
+                          <input type="submit" name="shorten" id="shorten" class="form-submit" value="Update" />
+                        </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
 
     <!-- added Navbar using ejs File -->
     <%- include("./partials/Footer") %>
-    
 </body>
 
 </html>
