@@ -9,7 +9,7 @@ export const productTables = mysqlTable('product_table', {
   product_value: varchar({ length: 255 }).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().$onUpdate().notNull(),
-  userId: int("user_id").notNull().references(() => usersTable.id),
+  userId: int("user_id").notNull().references(() => usersTable.id, { onDelete: "cascade" }), // userid sessions data auto delete a user doesn't exist
 });
 
 export const sessionsTables = mysqlTable('sessions_table', {
@@ -40,6 +40,18 @@ export const usersTable = mysqlTable('users_table', {
   isEmailValid: boolean("is_email_valid").default(false).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().$onUpdate().notNull(),
+});
+
+// contact Table
+export const contactTable = mysqlTable('contact_table', {
+  id: int().autoincrement().primaryKey(),
+  name: varchar({ length: 255 }).notNull(),
+  number: varchar('number', { length: 20 }).notNull().unique(), // Best practice for phone numbers
+  email: varchar({ length: 255 }).notNull().unique(),
+  message: varchar({ length: 500 }).notNull(),
+  // userId: int("user_id").notNull().references(() => usersTable.id, { onDelete: "cascade" }), // userid sessions data auto delete a user doesn't exist
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().$onUpdateFn().notNull(),
 });
 
 // A user can have many Product Table
