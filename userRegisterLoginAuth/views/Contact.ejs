@@ -17,7 +17,26 @@
   <!-- added Navbar using ejs File -->
   <%- include("./partials/Header") %>
 
-    <h1>Contact page</h1>
+    <main class="container profile-container">
+      <h1 class="page-title">Your Contact</h1>
+      <div class="user-status">
+        <% if(user) { %>
+          <div class="status-badge success">
+            <i class="zmdi zmdi-check-circle"></i>
+            <span>You are logged in</span>
+          </div>
+          <% } else { %>
+            <div class="status-badge warning">
+              <i class="zmdi zmdi-alert-circle"></i>
+              <span>You are not logged in</span>
+            </div>
+            <% } %>
+      </div>
+      <div class="contact-card">
+        <h1>Contact Page</h1>
+      </div>
+      </div>
+    </main>
 
     <!-- added Footer using ejs File -->
     <%- include("./partials/Footer") %>
