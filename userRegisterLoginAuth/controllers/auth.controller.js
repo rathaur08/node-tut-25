@@ -187,6 +187,17 @@ export const postEditProfilePage = async (req, res) => {
 
 }
 
+// getChangePasswordPage
+export const getChangePasswordPage = async (req, res) => {
+
+  if (!req.user) return res.redirect("/");
+
+  return res.render("auth/changePassword", {
+    errors: req.flash("errors"),
+  })
+
+};
+
 // getVerifyEmailPage
 export const getVerifyEmailPage = async (req, res) => {
   // if (!req.user || req.user.isEmailValid) return res.redirect("/");
