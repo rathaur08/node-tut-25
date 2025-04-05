@@ -13,10 +13,11 @@ import {
   findVerificationEmailToken,
   verifyUserEmailAndUpdate,
   clearVerifyEmailToken,
-  sendNewVerifyEmailLink
+  sendNewVerifyEmailLink,
+  updateUserByName
 } from "../services/auth.services.js";
 import { getAllProductData } from "../services/product.services.js";
-import { loginUserSchema, registerUserSchema, verifyEmailSchema } from "../validators/auth.validator.js";
+import { loginUserSchema, registerUserSchema, verifyEmailSchema, verifyUserSchema } from "../validators/auth.validator.js";
 
 export const getRegisterPage = (req, res) => {
   if (req.user) return res.redirect("/");
@@ -148,6 +149,43 @@ export const getProfilePage = async (req, res) => {
     }
   })
 };
+
+// getEditProfilePage
+export const getEditProfilePage = async (req, res) => {
+
+  if (!req.user) return res.redirect("/");
+
+  const user = await findUserById(req.user.id);
+
+  if (!user) return res.status(404).send("User Not Found");
+
+  return res.render("auth/editProfile", {
+    name: user.name,
+    errors: req.flash("errors"),
+  })
+
+}
+
+// postEditProfilePage
+export const postEditProfilePage = async (req, res) => {
+
+  if (!req.user) return res.redirect("/");
+
+  // const user = req.body;
+  const { data, error } = verifyUserSchema.safeParse(req.body);
+
+  if (error) {
+    const errorMessages = error.errors.map((err) => err.message);
+    req.flash("errors", errorMessages);
+    console.log("error", errorMessages);
+    res.redirect("/edit-profile");
+  }
+
+  await updateUserByName({ userId: req.user.id, name: data.name })
+
+  return res.redirect("/profile");
+
+}
 
 // getVerifyEmailPage
 export const getVerifyEmailPage = async (req, res) => {

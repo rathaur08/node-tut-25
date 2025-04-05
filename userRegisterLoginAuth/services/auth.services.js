@@ -29,6 +29,13 @@ export const createUser = async ({ name, age, email, password }) => {
     .$returningId();
 }
 
+// updateUserByName
+export const updateUserByName = async ({ userId, name }) => {
+  return await db.update(usersTable)
+    .set({ name })
+    .where(eq(usersTable.id, userId));
+}
+
 export const hashPassword = async (password) => {
   // return await bcrypt.hash(password, 10)
   return await argon2.hash(password)

@@ -10,6 +10,12 @@ export const registerUserSchema = z.object({
   password: z.string().trim().min(3).max(100),
 })
 
+export const verifyUserSchema = z.object({
+  name: z.string().trim()
+    .min(3, { message: "Name must be at least 3 characters long." })
+    .max(100, { message: "Name must be no more than 100 characters." }),
+})
+
 export const loginUserSchema = z.object({
   email: z.string().trim().email().max(100),
   password: z.string().trim().min(3).max(100),
