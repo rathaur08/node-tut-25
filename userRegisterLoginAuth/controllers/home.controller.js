@@ -27,10 +27,7 @@ export const postHomeProduct = async (req, res) => {
   // console.log("Create product", product);
 
   if (product) {
-    req.flash(
-      "errors",
-      "Product with that already exitsts, please added another"
-    )
+    req.flash("errors", "Product with that already exitsts, please added another")
   };
 
   return res.redirect("/")
