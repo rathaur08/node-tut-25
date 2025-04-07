@@ -17,7 +17,7 @@ import {
   updateUserByName
 } from "../services/auth.services.js";
 import { getAllProductData } from "../services/product.services.js";
-import { loginUserSchema, registerUserSchema, verifyEmailSchema, verifyUserSchema } from "../validators/auth.validator.js";
+import { loginUserSchema, registerUserSchema, verifyEmailSchema, verifyPasswordSchema, verifyUserSchema } from "../validators/auth.validator.js";
 
 export const getRegisterPage = (req, res) => {
   if (req.user) return res.redirect("/");
@@ -197,6 +197,24 @@ export const getChangePasswordPage = async (req, res) => {
   })
 
 };
+
+// postChangePasswordPage
+export const postChangePasswordPage = async (req, res) => {
+
+  if (!req.user) return res.redirect("/");
+  const { data, error } = verifyPasswordSchema.safeParse(req.body);
+
+  if (error) {
+    const errorMessages = error.errors.map((err) => err.message);
+    req.flash("errors", errorMessages);
+    console.error("error", errorMessages);
+    res.redirect("/change-password");
+  }
+
+  // console.log("Data: ", data);
+  return res.redirect("/change-password")
+
+}
 
 // getVerifyEmailPage
 export const getVerifyEmailPage = async (req, res) => {
