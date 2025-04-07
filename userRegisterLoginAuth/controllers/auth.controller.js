@@ -14,7 +14,8 @@ import {
   verifyUserEmailAndUpdate,
   clearVerifyEmailToken,
   sendNewVerifyEmailLink,
-  updateUserByName
+  updateUserByName,
+  updateUserPassword
 } from "../services/auth.services.js";
 import { getAllProductData } from "../services/product.services.js";
 import { loginUserSchema, registerUserSchema, verifyEmailSchema, verifyPasswordSchema, verifyUserSchema } from "../validators/auth.validator.js";
@@ -211,8 +212,20 @@ export const postChangePasswordPage = async (req, res) => {
     res.redirect("/change-password");
   }
 
-  // console.log("Data: ", data);
-  return res.redirect("/change-password")
+  const { currentPassword, newPassword } = data;
+
+  const user = await findUserById(req.user.id);
+  if (!user) return res.status(404).send("User Not Found");
+
+  const isPasswordValid = await comparePassword(currentPassword, user.password);
+  if (!isPasswordValid) {
+    req.flash("errors", "Currunt Password that you entered is invalid");
+    return res.redirect("/change-password");
+  }
+
+  await updateUserPassword({ newPassword, userId: user.id })
+
+  return res.redirect("/profile");
 
 }
 

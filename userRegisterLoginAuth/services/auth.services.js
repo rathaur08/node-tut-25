@@ -321,3 +321,15 @@ export const sendNewVerifyEmailLink = async ({ userId, email }) => {
   }).catch(console.error);
 
 }
+
+// updateUserPassword
+export const updateUserPassword = async ({ userId, newPassword }) => {
+  // Convert newPassword to newHashPassword
+  const newHashPassword = await hashPassword(newPassword);
+
+  // Update Password 
+  return await db.update(usersTable).set({ password: newHashPassword }).where(eq(usersTable.id, userId))
+
+}
+
+// 
