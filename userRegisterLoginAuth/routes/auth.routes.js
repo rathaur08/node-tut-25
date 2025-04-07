@@ -23,12 +23,16 @@ router.route("/resend-verification-link").post(authControllers.postResendVerific
 router.route("/verify-email-token").get(authControllers.getVerifyEmailToken);
 
 router.route("/edit-profile")
-.get(authControllers.getEditProfilePage)
-.post(authControllers.postEditProfilePage);
+  .get(authControllers.getEditProfilePage)
+  .post(authControllers.postEditProfilePage);
 
 router.route("/change-password")
-.get(authControllers.getChangePasswordPage)
-.post(authControllers.postChangePasswordPage);
+  .get(authControllers.getChangePasswordPage)
+  .post(authControllers.postChangePasswordPage);
+
+router.route("/reset-password")
+  .get(authControllers.getResetPasswordPage)
+  // .post(authControllers.postResetPasswordPage);
 
 router.route("/logout").get(authControllers.userLogoutPage);
 
