@@ -1,5 +1,6 @@
-import { getAllProductData, createProduct, findProductById, updateProduct, deleteProductById } from "../services/product.services.js";
+import { getAllProductData, createProduct, findProductById, updateProduct, deleteProductById, createContact } from "../services/product.services.js";
 import z from "zod";
+import { contactSchema } from "../validators/product.validator.js";
 
 // 
 export const getHome = async (req, res) => {
@@ -101,8 +102,31 @@ export const deleteHomeProduct = async (req, res) => {
 };
 
 export const getContact = (req, res) => {
-  return res.render("Contact")
+  return res.render("Contact", {
+    errors: req.flash("errors"),
+  })
 };
+
+export const postContact = async (req, res) => {
+
+  const { data, error } = contactSchema.safeParse(req.body);
+
+  if (error) {
+    const errorMessages = error.errors.map((err) => err.message);
+    req.flash("errors", errorMessages);
+    console.error("error", errorMessages);
+    res.redirect("/contact");
+  }
+
+  console.log("data", data);
+  debugger
+
+  const { name, number, email, message } = data;
+
+  await createContact({ name, number, email, message })
+
+  return res.redirect("/")
+}
 
 export const getAbout = (req, res) => {
   return res.render("About")

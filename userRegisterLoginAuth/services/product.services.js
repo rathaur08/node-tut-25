@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { db } from "../config/db.js";
-import { productTables } from "../drizzle/schema.js";
+import { contactTable, productTables } from "../drizzle/schema.js";
 
 // getAllProductData
 export const getAllProductData = async (userId) => {
@@ -32,4 +32,11 @@ export const updateProduct = async ({ id, product_name, product_value }) => {
 export const deleteProductById = async (id) => {
   return await db.delete(productTables)
     .where(eq(productTables.id, id));
+}
+
+// 
+export const createContact = async ({ name, number, email, message }) => {
+  return await db.insert(contactTable)
+    .values({ name, number, email, message })
+    .$returningId();
 }
