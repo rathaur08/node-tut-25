@@ -2,15 +2,21 @@ import z from "zod";
 
 
 export const productSchema = z.object({
-  product_name: z.string({ required_error: "Name is Required" })
+  product_name: z.string({ required_error: "Product name is required" })
     .trim()
-    .min(3, { message: "Name must be at least 3 characters long." })
-    .max(100, { message: "Name must be no more than 100 characters." }),
-  product_value: z.coerce.number({ required_error: "Value is Required" })
-    .int()
-    .min(1, { message: "value must be at least 1 characters long." })
-    .max(100, { message: "value must be no more than 100 characters." }),
-})
+    .min(3, { message: "Product name must be at least 3 characters long." })
+    .max(100, { message: "Product name must be no more than 100 characters." }),
+
+  product_value: z.coerce.number({ required_error: "Product value is required" })
+    .min(1, { message: "Product value must be at least 1." })
+    .max(10000, { message: "Product value must be no more than 10,000." }),
+
+  product_image: z.string({ required_error: "Product image is required" })
+    .trim()
+    .url({ message: "Product image must be a valid URL." })
+    .max(500, { message: "Product image URL must be no more than 500 characters." }),
+});
+
 
 export const contactSchema = z.object({
   name: z.string({ required_error: "Name is required" })

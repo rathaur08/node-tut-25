@@ -118,14 +118,11 @@ export const postContact = async (req, res) => {
     res.redirect("/contact");
   }
 
-  console.log("data", data);
-  debugger
-
   const { name, number, email, message } = data;
+  await createContact({ name, number, email, message });
 
-  await createContact({ name, number, email, message })
+  return res.redirect("/");
 
-  return res.redirect("/")
 }
 
 export const getAbout = (req, res) => {
