@@ -66,3 +66,9 @@ export const verifyPasswordSchema = z.object({
   message: "Passwords do not match.",
   path: ["confirmPassword"], // Targets the confirmPassword field
 });
+
+export const forgotPasswordSchema = z.object({
+  email: z.string({ required_error: "Email is required" })
+    .trim()
+    .email({ message: "Please enter a valid email address." }),
+});

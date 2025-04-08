@@ -15,10 +15,12 @@ import {
   clearVerifyEmailToken,
   sendNewVerifyEmailLink,
   updateUserByName,
-  updateUserPassword
+  updateUserPassword,
+  findUserByEmail,
+  createResetPasswordLink
 } from "../services/auth.services.js";
 import { getAllProductData } from "../services/product.services.js";
-import { loginUserSchema, registerUserSchema, verifyEmailSchema, verifyPasswordSchema, verifyUserSchema } from "../validators/auth.validator.js";
+import { forgotPasswordSchema, loginUserSchema, registerUserSchema, verifyEmailSchema, verifyPasswordSchema, verifyUserSchema } from "../validators/auth.validator.js";
 
 export const getRegisterPage = (req, res) => {
   if (req.user) return res.redirect("/");
@@ -236,6 +238,31 @@ export const getResetPasswordPage = async (req, res) => {
     formSubmitted: req.flash("formSubmitted")[0],
     errors: req.flash("errors"),
   })
+
+}
+
+// postForgotPasswordPage
+export const postForgotPasswordPage = async (req, res) => {
+
+  const { data, error } = forgotPasswordSchema.safeParse(req.body);
+
+  if (error) {
+    const errorMessages = error.errors.map((err) => err.message);
+    req.flash("errors", errorMessages[0]);
+    console.error("error", errorMessages);
+    return res.redirect("/reset-password");
+  }
+
+  const user = await findUserByEmail(data.email);
+
+  if (!user) {
+    req.flash("errors", "Invalid Email");
+    return res.redirect("/reset-password");
+  }
+
+  if (user) {
+    const resetPasswordLink = await createResetPasswordLink({ userId: user.id });
+  }
 
 }
 

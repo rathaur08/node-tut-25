@@ -115,7 +115,7 @@ export const postContact = async (req, res) => {
     const errorMessages = error.errors.map((err) => err.message);
     req.flash("errors", errorMessages);
     console.error("error", errorMessages);
-    res.redirect("/contact");
+    return res.redirect("/contact");
   }
 
   const { name, number, email, message } = data;

@@ -32,7 +32,7 @@ router.route("/change-password")
 
 router.route("/reset-password")
   .get(authControllers.getResetPasswordPage)
-  // .post(authControllers.postResetPasswordPage);
+  .post(authControllers.postForgotPasswordPage);
 
 router.route("/logout").get(authControllers.userLogoutPage);
 
