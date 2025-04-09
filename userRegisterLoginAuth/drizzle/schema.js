@@ -55,8 +55,8 @@ export const usersTable = mysqlTable('users_table', {
 export const contactTable = mysqlTable('contact_table', {
   id: int().autoincrement().primaryKey(),
   name: varchar({ length: 255 }).notNull(),
-  number: varchar('number', { length: 20 }).notNull().unique(), // Best practice for phone numbers
-  email: varchar({ length: 255 }).notNull().unique(),
+  number: varchar('number', { length: 20 }).notNull(), // Best practice for phone numbers
+  email: varchar({ length: 255 }).notNull(),
   message: varchar({ length: 500 }).notNull(),
   // userId: int("user_id").notNull().references(() => usersTable.id, { onDelete: "cascade" }), // userid sessions data auto delete a user doesn't exist
   createdAt: timestamp("created_at").defaultNow().notNull(),
