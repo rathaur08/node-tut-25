@@ -1,4 +1,5 @@
 import { ACCESS_TOKEN_EXPIRY, REFRESH_TOKEN_EXPIRY } from "../config/constants.js";
+import { getHtmlFromMjmlTemplate } from "../lib/get-html-from-mjml-template.js";
 import { sendEmail } from "../lib/nodemailer.js";
 import {
   createUser, getUserByEmail, hashPassword, comparePassword,
@@ -261,9 +262,19 @@ export const postForgotPasswordPage = async (req, res) => {
   }
 
   if (user) {
-    const resetPasswordLink = await createResetPasswordLink({ userId: user.id });
+    const resetPasswordLink = await createResetPasswordLink({
+      userId: user.id
+    });
+
+    const html = await getHtmlFromMjmlTemplate("reset-password-email", {
+      name: user.name,
+      link: resetPasswordLink,
+    })
+
+    console.log("html", html);
   }
 
+  return res.redirect("/login");
 }
 
 // getVerifyEmailPage
