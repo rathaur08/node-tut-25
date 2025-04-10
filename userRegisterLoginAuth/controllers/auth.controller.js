@@ -1,6 +1,6 @@
 import { ACCESS_TOKEN_EXPIRY, REFRESH_TOKEN_EXPIRY } from "../config/constants.js";
 import { getHtmlFromMjmlTemplate } from "../lib/get-html-from-mjml-template.js";
-import { sendEmail } from "../lib/nodemailer.js";
+import { sendEmail } from "../lib/send-email.js";
 import {
   createUser, getUserByEmail, hashPassword, comparePassword,
   //  generateToken
@@ -271,10 +271,17 @@ export const postForgotPasswordPage = async (req, res) => {
       link: resetPasswordLink,
     })
 
-    console.log("html", html);
+    // console.log("html", html);
+    sendEmail({
+      to: user.email,
+      subject: "RESET YOUR PASSWORD",
+      html,
+    });
   }
 
-  return res.redirect("/login");
+  req.flash("formSubmitted", true);
+
+  return res.redirect("/reset-password");
 }
 
 // getVerifyEmailPage
