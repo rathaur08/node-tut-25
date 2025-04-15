@@ -18,7 +18,8 @@ import {
   updateUserByName,
   updateUserPassword,
   findUserByEmail,
-  createResetPasswordLink
+  createResetPasswordLink,
+  getResetPasswordToken
 } from "../services/auth.services.js";
 import { getAllProductData } from "../services/product.services.js";
 import { forgotPasswordSchema, loginUserSchema, registerUserSchema, verifyEmailSchema, verifyPasswordSchema, verifyUserSchema } from "../validators/auth.validator.js";
@@ -282,6 +283,19 @@ export const postForgotPasswordPage = async (req, res) => {
   req.flash("formSubmitted", true);
 
   return res.redirect("/reset-password");
+}
+
+// getResetPasswordTokenPage
+export const getResetPasswordTokenPage = async (req, res) => {
+  const { token } = req.params;
+  const passwordResetData = await getResetPasswordToken(token)
+  if (!passwordResetData) return res.render("auth/wrongResetPasswordToken")
+
+  return res.render("auth/resetPassword", {
+    formSubmitted: req.flash("formSubmitted")[0],
+    errors: req.flash("errors"),
+    token,
+  })
 }
 
 // getVerifyEmailPage
