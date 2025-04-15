@@ -72,3 +72,16 @@ export const forgotPasswordSchema = z.object({
     .trim()
     .email({ message: "Please enter a valid email address." }),
 });
+
+export const verifyResetPasswordSchema = z.object({
+  newPassword: z.string({ required_error: "New password is required." })
+    .min(6, { message: "New password must be at least 6 characters long." })
+    .max(100, { message: "New password must be no more than 100 characters." }),
+
+  confirmPassword: z.string({ required_error: "Please confirm your new password." })
+    .min(6, { message: "Confirm password must be at least 6 characters long." })
+    .max(100, { message: "Confirm password must be no more than 100 characters." }),
+}).refine((data) => data.newPassword === data.confirmPassword, {
+  message: "Passwords do not match.",
+  path: ["confirmPassword"], // Targets the confirmPassword field
+});

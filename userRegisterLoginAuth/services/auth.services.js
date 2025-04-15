@@ -369,3 +369,10 @@ export const getResetPasswordToken = async (token) => {
 
   return data;
 }
+
+// clearResetPasswordToken
+export const clearResetPasswordToken = async (userId) => {
+  // Delete Maching Token
+  return await db.delete(passwordResetTokensTable)
+    .where(eq(passwordResetTokensTable.userId, userId));
+}

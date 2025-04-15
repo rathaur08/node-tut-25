@@ -19,10 +19,11 @@ import {
   updateUserPassword,
   findUserByEmail,
   createResetPasswordLink,
-  getResetPasswordToken
+  getResetPasswordToken,
+  clearResetPasswordToken
 } from "../services/auth.services.js";
 import { getAllProductData } from "../services/product.services.js";
-import { forgotPasswordSchema, loginUserSchema, registerUserSchema, verifyEmailSchema, verifyPasswordSchema, verifyUserSchema } from "../validators/auth.validator.js";
+import { forgotPasswordSchema, loginUserSchema, registerUserSchema, verifyEmailSchema, verifyPasswordSchema, verifyResetPasswordSchema, verifyUserSchema } from "../validators/auth.validator.js";
 
 export const getRegisterPage = (req, res) => {
   if (req.user) return res.redirect("/");
@@ -296,6 +297,35 @@ export const getResetPasswordTokenPage = async (req, res) => {
     errors: req.flash("errors"),
     token,
   })
+}
+
+// postResetPasswordTokenPage
+export const postResetPasswordTokenPage = async (req, res) => {
+  const { token } = req.params;
+
+  const passwordResetData = await getResetPasswordToken(token)
+  if (!passwordResetData) {
+    req.flash("errors", "Password Token is not matching");
+    return res.render("auth/wrong-reset-password-token");
+  }
+
+  const { data, error } = verifyResetPasswordSchema.safeParse(req.body);
+  if (error) {
+    const errorMessages = error.errors.map((err) => err.message);
+    req.flash("errors", errorMessages[0]);
+    return res.redirect(`/reset-password/${token}`);
+  }
+
+  const { newPassword } = data;
+
+  const user = await findUserById(passwordResetData.userId);
+
+  await clearResetPasswordToken(user.id);
+
+  await updateUserPassword({ userId: user.id, newPassword })
+
+  return res.redirect("/login");
+
 }
 
 // getVerifyEmailPage
