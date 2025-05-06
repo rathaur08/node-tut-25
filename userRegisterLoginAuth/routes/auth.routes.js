@@ -38,6 +38,9 @@ router.route("/reset-password/:token")
   .get(authControllers.getResetPasswordTokenPage)
   .post(authControllers.postResetPasswordTokenPage)
 
+router.route("/google").get(authControllers.getGoogleLoginPage);
+router.route("/google/callback").get(authControllers.getGoogleLoginCallback);
+
 router.route("/logout").get(authControllers.userLogoutPage);
 
 export const authRoute = router;

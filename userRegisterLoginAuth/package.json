@@ -16,6 +16,7 @@
   "author": "rathaur08",
   "license": "ISC",
   "dependencies": {
+    "arctic": "^3.6.0",
     "argon2": "^0.41.1",
     "bcryptjs": "^3.0.2",
     "connect-flash": "^0.1.1",
