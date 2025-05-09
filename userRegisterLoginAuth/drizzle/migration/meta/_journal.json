@@ -78,6 +78,20 @@
       "when": 1746534353920,
       "tag": "0010_thick_quasar",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "5",
+      "when": 1746786899219,
+      "tag": "0011_heavy_the_enforcers",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "5",
+      "when": 1746787046362,
+      "tag": "0012_ancient_taskmaster",
+      "breakpoints": true
     }
   ]
 }

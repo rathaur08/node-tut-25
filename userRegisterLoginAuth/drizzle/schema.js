@@ -59,6 +59,7 @@ export const usersTable = mysqlTable('users_table', {
   password: varchar({ length: 255 }),
   // remove not null
   // .notNull(),
+  avatarUrl: text("avatar_url"),
   isEmailValid: boolean("is_email_valid").default(false).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().$onUpdate().notNull(),
