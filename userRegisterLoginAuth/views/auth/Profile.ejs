@@ -5,11 +5,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <link rel="icon" href="https://d3tfanr7troppj.cloudfront.net/static_files/images/000/006/304/original/JetSetGo_New_Favicon.png?1733138127" type="image/svg+xml/png" />
+  <link rel="icon"
+    href="https://d3tfanr7troppj.cloudfront.net/static_files/images/000/006/304/original/JetSetGo_New_Favicon.png?1733138127"
+    type="image/svg+xml/png" />
   <title>Profile</title>
 
   <!-- Font Icon -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/material-design-iconic-font@2.2.0/dist/css/material-design-iconic-font.min.css" />
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/material-design-iconic-font@2.2.0/dist/css/material-design-iconic-font.min.css" />
 
   <!-- Main css -->
   <link rel="stylesheet" href="style.css" />
@@ -98,12 +101,18 @@
         <a href="/edit-profile" class="btn">
           <i class="zmdi zmdi-edit"></i> Edit Profile
         </a>
-        <a href="/change-password" class="btn">
-          <i class="zmdi zmdi-key"></i> Change Password
-        </a>
-        <a href="/logout" class="btn">
-          <i class="zmdi zmdi-power"></i> Logout
-        </a>
+        <% if (user.hasPassword) { %>
+          <a href="/change-password" class="btn">
+            <i class="zmdi zmdi-key"></i> Change Password
+          </a>
+          <% } else { %>
+            <a href="/set-password" class="btn">
+              <i class="zmdi zmdi-key"></i> Set Password
+            </a>
+            <% } %>
+              <a href="/logout" class="btn">
+                <i class="zmdi zmdi-power"></i> Logout
+              </a>
       </div>
     </main>
 

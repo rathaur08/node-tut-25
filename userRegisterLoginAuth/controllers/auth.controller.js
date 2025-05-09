@@ -27,7 +27,7 @@ import {
   linkUserWithOauth
 } from "../services/auth.services.js";
 import { getAllProductData } from "../services/product.services.js";
-import { forgotPasswordSchema, loginUserSchema, registerUserSchema, verifyEmailSchema, verifyPasswordSchema, verifyResetPasswordSchema, verifyUserSchema } from "../validators/auth.validator.js";
+import { forgotPasswordSchema, loginUserSchema, registerUserSchema, setPasswordSchema, verifyEmailSchema, verifyPasswordSchema, verifyResetPasswordSchema, verifyUserSchema } from "../validators/auth.validator.js";
 import { google } from "../lib/oauth/google.js";
 import { github } from "../lib/oauth/github.js";
 
@@ -166,6 +166,7 @@ export const getProfilePage = async (req, res) => {
       name: user.name,
       email: user.email,
       isEmailValid: user.isEmailValid,
+      hasPassword: Boolean(user.password),
       createdAt: user.createdAt,
       products: userProducts,
     }
@@ -605,3 +606,41 @@ export const getGithubLoginCallback = async (req, res) => {
 
   res.redirect("/");
 };
+
+// getSetPasswordPage
+export const getSetPasswordPage = async (req, res) => {
+  if (!req.user) return res.redirect("/");
+
+  return res.render("auth/setPassword", {
+    errors: req.flash("errors"),
+  });
+};
+
+// postSetPasswordPage
+export const postSetPasswordPage = async (req, res) => {
+  if (!req.user) return res.redirect("/");
+
+  const { data, error } = setPasswordSchema.safeParse(req.body);
+
+  if (error) {
+    const errorMessages = error.errors.map((err) => err.message);
+    req.flash("errors", errorMessages);
+    return res.redirect("/set-password");
+  }
+
+  const { newPassword } = data;
+
+  const user = await findUserById(req.user.id);
+  if (user.password) {
+    req.flash(
+      "errors",
+      "You already have your Password, Instead Change your password"
+    );
+    return res.redirect("/set-password");
+  }
+
+  await updateUserPassword({ userId: req.user.id, newPassword });
+
+  return res.redirect("/profile");
+};
+
