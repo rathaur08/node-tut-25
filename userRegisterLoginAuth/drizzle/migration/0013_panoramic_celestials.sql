@@ -1,0 +1,1 @@
+ALTER TABLE `product_table` DROP COLUMN `updated_at`;
