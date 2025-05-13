@@ -1,14 +1,32 @@
 import { getAllProductData, createProduct, findProductById, updateProduct, deleteProductById, createContact } from "../services/product.services.js";
 import z from "zod";
-import { contactSchema } from "../validators/product.validator.js";
+import { contactSchema, productSearchParamsSchema } from "../validators/product.validator.js";
 
 // 
 export const getHome = async (req, res) => {
 
   try {
     if (!req.user) return res.redirect("/login");
-    const product = await getAllProductData(req.user.id)
-    return res.render("index", { product, errors: req.flash("errors") })
+
+    const searchParams = productSearchParamsSchema.parse(req.query);
+
+    // const product = await getAllProductData(req.user.id)
+    const { productList, totalProduct } = await getAllProductData({
+      userId: req.user.id,
+      limit: 10,
+      offset: (searchParams.page - 1) * 10,
+    });
+    console.log("searchParams", searchParams.page);
+
+    // totalCount = 100
+    const totalPages = Math.ceil(totalProduct / 10);
+
+    return res.render("index", {
+      product: productList,
+      currentPage: searchParams.page,
+      totalPages: totalPages,
+      errors: req.flash("errors")
+    })
 
   } catch (error) {
     console.error(error);

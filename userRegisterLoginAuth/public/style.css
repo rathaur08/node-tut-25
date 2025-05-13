@@ -40,8 +40,7 @@
 }
 
 html {
-  font-size: 62.5%;
-  /* 10px = 1rem */
+  font-size: 62.5%; /* 10px = 1rem */
   box-sizing: border-box;
 }
 
@@ -245,8 +244,8 @@ footer .social-links a:hover {
   border-bottom-color: var(--accent);
 }
 
-.form-group input:focus+label i,
-.form-group input:valid+label i {
+.form-group input:focus + label i,
+.form-group input:valid + label i {
   color: var(--accent);
 }
 
@@ -518,7 +517,6 @@ footer .social-links a:hover {
 
 /* Responsive adjustments */
 @media screen and (max-width: 76.8rem) {
-
   .signin-content,
   .signup-content {
     flex-direction: column-reverse;
@@ -712,15 +710,16 @@ footer .social-links a:hover {
   border: 3px solid rgba(255, 255, 255, 0.5);
 }
 
+.avatar-placeholder img {
+  border-radius: 50%;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  width: 8rem;
+  height: 8rem;
+}
+
 .avatar-placeholder span {
   font-size: 2.5rem;
   font-weight: 600;
-}
-
-.avatar-placeholder img {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
 }
 
 .profile-info {
@@ -1167,7 +1166,6 @@ footer .social-links a:hover {
   justify-content: center;
   align-items: center;
 }
-
 /* Forgot Password Button Styles */
 .forgot-password-wrapper {
   display: flex;
@@ -1194,4 +1192,43 @@ footer .social-links a:hover {
 .forgot-password-btn:hover {
   color: var(--accent);
   background-color: rgba(37, 99, 235, 0.05);
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+  gap: 5px;
+}
+
+.page-link {
+  display: inline-block;
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  color: #333;
+  text-decoration: none;
+  border-radius: 3px;
+  transition: all 0.2s ease;
+}
+
+.page-link:hover:not(.current):not(.disabled) {
+  background-color: #f5f5f5;
+  border-color: #ccc;
+}
+
+.page-link.current {
+  background-color: #4a89dc;
+  color: white;
+  border-color: #4a89dc;
+  cursor: default;
+}
+
+.page-link.disabled {
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+.ellipsis {
+  margin: 0 5px;
 }

@@ -1,11 +1,21 @@
-import { eq } from "drizzle-orm";
+import { count, desc, eq } from "drizzle-orm";
 import { db } from "../config/db.js";
 import { contactTable, productTables } from "../drizzle/schema.js";
 
 // getAllProductData
-export const getAllProductData = async (userId) => {
-  return await db.select().from(productTables)
-    .where(eq(productTables.userId, userId));
+export const getAllProductData = async ({ userId, limit = 10, offset = 0 }) => {
+
+  const condition = eq(productTables.userId, userId);
+
+  const productList = await db.select().from(productTables)
+    .where(condition)
+    .orderBy(desc(productTables.createdAt))
+    .limit(limit).offset(offset);
+
+  const [{ totalProduct }] = await db.select({ totalProduct: count() })
+    .from(productTables).where(condition);
+
+  return { productList, totalProduct };
 }
 
 export const createProduct = async ({ product_name, product_value, userId }) => {
