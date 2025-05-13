@@ -30,9 +30,9 @@ export const createUser = async ({ name, age, email, password }) => {
 }
 
 // updateUserByName
-export const updateUserByName = async ({ userId, name }) => {
+export const updateUserByName = async ({ userId, name, avatarUrl }) => {
   return await db.update(usersTable)
-    .set({ name })
+    .set({ name, avatarUrl })
     .where(eq(usersTable.id, userId));
 }
 
