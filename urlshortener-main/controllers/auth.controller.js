@@ -1,3 +1,4 @@
+import { decodeIdToken, generateCodeVerifier, generateState } from "arctic";
 import { getHtmlFromMjmlTemplate } from "../lib/get-html-from-mjml-template.js";
 import { sendEmail } from "../lib/send-email.js";
 import {
@@ -11,6 +12,7 @@ import {
   createResetPasswordLink,
   createSession,
   createUser,
+  createUserWithOauth,
   createVerifyEmailLink,
   findUserByEmail,
   findUserById,
@@ -20,8 +22,10 @@ import {
   getResetPasswordToken,
   // generateToken,
   getUserByEmail,
+  getUserWithOauthId,
   hashPassword,
   insertVerifyEmailToken,
+  linkUserWithOauth,
   sendNewVerifyEmailLink,
   updateUserByName,
   updateUserPassword,
@@ -31,11 +35,15 @@ import {
   forgotPasswordSchema,
   loginUserSchema,
   registerUserSchema,
+  setPasswordSchema,
   verifyEmailSchema,
   verifyPasswordSchema,
   verifyResetPasswordSchema,
   verifyUserSchema,
 } from "../validators/auth-validator.js";
+import { OAUTH_EXCHANGE_EXPIRY } from "../config/constants.js";
+import { google } from "../lib/oauth/google.js";
+import { github } from "../lib/oauth/github.js";
 
 export const getRegisterPage = (req, res) => {
   if (req.user) return res.redirect("/");
@@ -110,6 +118,16 @@ export const postLogin = async (req, res) => {
     return res.redirect("/login");
   }
 
+  if (!user.password) {
+    // database hash password
+    // if password is null
+    req.flash(
+      "errors",
+      "You have created account using social login. Please login with your social account."
+    );
+    return res.redirect("/login");
+  }
+
   //todo bcrypt.compare(plainTextPassword, hashedPassword);
   const isPasswordValid = await comparePassword(password, user.password);
 
@@ -166,6 +184,8 @@ export const getProfilePage = async (req, res) => {
       name: user.name,
       email: user.email,
       isEmailValid: user.isEmailValid,
+      hasPassword: Boolean(user.password),
+      avatarUrl: user.avatarUrl,
       createdAt: user.createdAt,
       links: userShortLinks,
     },
@@ -232,6 +252,7 @@ export const getEditProfilePage = async (req, res) => {
 
   return res.render("auth/edit-profile", {
     name: user.name,
+    avatarUrl: user.avatarUrl,
     errors: req.flash("errors"),
   });
 };
@@ -248,7 +269,15 @@ export const postEditProfile = async (req, res) => {
     return res.redirect("/edit-profile");
   }
 
-  await updateUserByName({ userId: req.user.id, name: data.name });
+  // await updateUserByName({ userId: req.user.id, name: data.name });
+
+  const fileUrl = req.file ? `uploads/avatar/${req.file.filename}` : undefined;
+
+  await updateUserByName({
+    userId: req.user.id,
+    name: data.name,
+    avatarUrl: fileUrl,
+  });
 
   return res.redirect("/profile");
 };
@@ -278,7 +307,7 @@ export const postChangePassword = async (req, res) => {
   const user = await findUserById(req.user.id);
   if (!user) return res.status(404).send("User not found");
 
-  const isPasswordValid = comparePassword(currentPassword, user.password);
+  const isPasswordValid = await comparePassword(currentPassword, user.password);
   if (!isPasswordValid) {
     req.flash("errors", "Current Password that you entered is invalid");
     return res.redirect("/change-password");
@@ -378,4 +407,248 @@ export const postResetPasswordToken = async (req, res) => {
   await updateUserPassword({ userId: user.id, newPassword });
 
   return res.redirect("/login");
+};
+
+//getGoogleLoginPage
+export const getGoogleLoginPage = async (req, res) => {
+  if (req.user) return res.redirect("/");
+
+  const state = generateState();
+  const codeVerifier = generateCodeVerifier();
+  const url = google.createAuthorizationURL(state, codeVerifier, [
+    "openid", // this is called scopes, here we are giving openid, and profile
+    "profile", // openid gives tokens if needed, and profile gives user information
+    // we are telling google about the information that we require from user.
+    "email",
+  ]);
+
+  const cookieConfig = {
+    httpOnly: true,
+    secure: true,
+    maxAge: OAUTH_EXCHANGE_EXPIRY,
+    sameSite: "lax", // this is such that when google redirects to our website, cookies are maintained
+  };
+
+  res.cookie("google_oauth_state", state, cookieConfig);
+  res.cookie("google_code_verifier", codeVerifier, cookieConfig);
+
+  res.redirect(url.toString());
+};
+
+//getGoogleLoginCallback
+export const getGoogleLoginCallback = async (req, res) => {
+  // google redirects with code, and state in query params
+  // we will use code to find out the user
+  const { code, state } = req.query;
+  console.log(code, state);
+
+  const {
+    google_oauth_state: storedState,
+    google_code_verifier: codeVerifier,
+  } = req.cookies;
+
+  if (
+    !code ||
+    !state ||
+    !storedState ||
+    !codeVerifier ||
+    state !== storedState
+  ) {
+    req.flash(
+      "errors",
+      "Couldn't login with Google because of invalid login attempt. Please try again!"
+    );
+    return res.redirect("/login");
+  }
+
+  let tokens;
+  try {
+    // arctic will verify the code given by google with code verifier internally
+    tokens = await google.validateAuthorizationCode(code, codeVerifier);
+  } catch {
+    req.flash(
+      "errors",
+      "Couldn't login with Google because of invalid login attempt. Please try again!"
+    );
+    return res.redirect("/login");
+  }
+
+  console.log("token google: ", tokens);
+
+  const claims = decodeIdToken(tokens.idToken());
+  console.log("claim: ", claims);
+
+  const { sub: googleUserId, name, email, picture } = claims;
+
+  //! there are few things that we should do
+  // Condition 1: User already exists with google's oauth linked
+  // Condition 2: User already exists with the same email but google's oauth isn't linked
+  // Condition 3: User doesn't exist.
+
+  // if user is already linked then we will get the user
+  let user = await getUserWithOauthId({
+    provider: "google",
+    email,
+  });
+
+  // if user exists but user is not linked with oauth
+  if (user && !user.providerAccountId) {
+    await linkUserWithOauth({
+      userId: user.id,
+      provider: "google",
+      providerAccountId: googleUserId,
+      avatarUrl: picture,
+    });
+  }
+
+  // if user doesn't exist
+  if (!user) {
+    user = await createUserWithOauth({
+      name,
+      email,
+      provider: "google",
+      providerAccountId: googleUserId,
+      avatarUrl: picture,
+    });
+  }
+  await authenticateUser({ req, res, user, name, email });
+
+  res.redirect("/");
+};
+
+//getGithubLoginPage
+
+export const getGithubLoginPage = async (req, res) => {
+  if (req.user) return res.redirect("/");
+
+  const state = generateState();
+
+  const url = github.createAuthorizationURL(state, ["user:email"]);
+
+  const cookieConfig = {
+    httpOnly: true,
+    secure: true,
+    maxAge: OAUTH_EXCHANGE_EXPIRY,
+    sameSite: "lax", // this is such that when google redirects to our website, cookies are maintained
+  };
+
+  res.cookie("github_oauth_state", state, cookieConfig);
+
+  res.redirect(url.toString());
+};
+
+//getGithubLoginCallback
+export const getGithubLoginCallback = async (req, res) => {
+  const { code, state } = req.query;
+  const { github_oauth_state: storedState } = req.cookies;
+
+  function handleFailedLogin() {
+    req.flash(
+      "errors",
+      "Couldn't login with GitHub because of invalid login attempt. Please try again!"
+    );
+    return res.redirect("/login");
+  }
+
+  if (!code || !state || !storedState || state !== storedState) {
+    return handleFailedLogin();
+  }
+
+  let tokens;
+  try {
+    tokens = await github.validateAuthorizationCode(code);
+  } catch {
+    return handleFailedLogin();
+  }
+
+  const githubUserResponse = await fetch("https://api.github.com/user", {
+    headers: {
+      Authorization: `Bearer ${tokens.accessToken()}`,
+    },
+  });
+  if (!githubUserResponse.ok) return handleFailedLogin();
+  const githubUser = await githubUserResponse.json();
+  const { id: githubUserId, name } = githubUser;
+
+  const githubEmailResponse = await fetch(
+    "https://api.github.com/user/emails",
+    {
+      headers: {
+        Authorization: `Bearer ${tokens.accessToken()}`,
+      },
+    }
+  );
+  if (!githubEmailResponse.ok) return handleFailedLogin();
+
+  const emails = await githubEmailResponse.json();
+  const email = emails.filter((e) => e.primary)[0].email; // In GitHub we can have multiple emails, but we only want primary email
+  if (!email) return handleFailedLogin();
+
+  // there are few things that we should do
+  //! Condition 1: User already exists with github's oauth linked
+  //! Condition 2: User already exists with the same email but google's oauth isn't linked
+  //! Condition 3: User doesn't exist.
+
+  let user = await getUserWithOauthId({
+    provider: "github",
+    email,
+  });
+
+  if (user && !user.providerAccountId) {
+    await linkUserWithOauth({
+      userId: user.id,
+      provider: "github",
+      providerAccountId: githubUserId,
+    });
+  }
+
+  if (!user) {
+    user = await createUserWithOauth({
+      name,
+      email,
+      provider: "github",
+      providerAccountId: githubUserId,
+    });
+  }
+
+  await authenticateUser({ req, res, user, name, email });
+
+  res.redirect("/");
+};
+
+//getSetPasswordPage
+export const getSetPasswordPage = async (req, res) => {
+  if (!req.user) return res.redirect("/");
+
+  return res.render("auth/set-password", {
+    errors: req.flash("errors"),
+  });
+};
+
+//postSetPassword
+export const postSetPassword = async (req, res) => {
+  if (!req.user) return res.redirect("/");
+
+  const { data, error } = setPasswordSchema.safeParse(req.body);
+
+  if (error) {
+    const errorMessages = error.errors.map((err) => err.message);
+    req.flash("errors", errorMessages);
+    return res.redirect("/set-password");
+  }
+
+  const { newPassword } = data;
+
+  const user = await findUserById(req.user.id);
+  if (user.password) {
+    req.flash(
+      "errors",
+      "You already have your Password, Instead Change your password"
+    );
+    return res.redirect("/set-password");
+  }
+
+  await updateUserPassword({ userId: req.user.id, newPassword });
+
+  return res.redirect("/profile");
 };
