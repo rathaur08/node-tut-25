@@ -1,0 +1,101 @@
+📄 Prisma + MySQL with JavaScript – Recap Document
+✅ 1. Initial Setup
+Searched for: MySQL and JavaScript.
+
+Created a project folder (already existed in the video).
+
+Inside the folder, created a package.json file:
+
+bash
+Copy
+Edit
+npm init -y
+✅ 2. Install Prisma
+Installed Prisma:
+
+bash
+Copy
+Edit
+npm install prisma --save-dev
+✅ 3. Initialize Prisma & Schema
+Initialized Prisma:
+
+bash
+Copy
+Edit
+npx prisma init
+This created:
+
+A prisma/schema.prisma file
+
+A .env file containing the database URL
+
+Updated the database URL in .env to use MySQL instead of PostgreSQL:
+
+env
+Copy
+Edit
+DATABASE_URL="mysql://username:password@localhost:3306/databasename"
+✅ 4. Define Schema (Database Table)
+generator and datasource sections were already present.
+
+Then, a model was written like this to define a table:
+
+prisma
+Copy
+Edit
+model User {
+  id    Int     @id @default(autoincrement())
+  name  String
+  email String  @unique
+}
+✅ 5. Run Migration
+To create the table in the database, ran:
+
+bash
+Copy
+Edit
+npx prisma migrate dev --name init
+This did two things:
+
+Created a migration folder
+
+Automatically installed the Prisma Client
+
+❗ If Prisma Client is not installed automatically, you can do it manually:
+
+bash
+Copy
+Edit
+npm install @prisma/client
+npx prisma generate
+✅ 6. Use Prisma Client in Code
+Imported and created an instance of Prisma Client:
+
+javascript
+Copy
+Edit
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
+With this client, you can perform any CRUD operation:
+
+javascript
+Copy
+Edit
+await prisma.user.create({...});
+await prisma.user.findMany();
+await prisma.user.update({...});
+await prisma.user.delete({...});
+✅ 7. Disconnect Prisma
+It's important to close the database connection:
+
+javascript
+Copy
+Edit
+await prisma.$disconnect();
+🎯 Final Thoughts from the Creator:
+Now you should have a clear idea of what Prisma is and how to use it as an ORM.
+
+If the video helped you, don’t forget to like, share, and subscribe.
+
+In the next video, a full project will be built using Prisma.
