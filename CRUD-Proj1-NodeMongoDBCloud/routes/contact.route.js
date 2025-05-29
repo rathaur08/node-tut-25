@@ -3,7 +3,7 @@ import { getContactPage, postContactPage } from "../controllers/contact.controll
 
 const router = Router();
 
-router.route("/").get(getContactPage).post(postContactPage)
+router.route("/contact").get(getContactPage).post(postContactPage)
 
 // Named exports
 export const ContactRoutes = router;
