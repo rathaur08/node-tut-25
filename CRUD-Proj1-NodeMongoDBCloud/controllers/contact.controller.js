@@ -1,8 +1,9 @@
-import { saveContactData } from "../services/contact.service.js";
+import { getContactData, saveContactData } from "../services/contact.service.js";
 
 export const getContactPage = async (req, res) => {
   try {
-    return res.render("contact");
+    const contactData = await getContactData();
+    return res.render("contact", { contactData });
   } catch (error) {
     console.error(error);
     return res.status(500).send("Internal server error");
