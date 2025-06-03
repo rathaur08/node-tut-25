@@ -1,4 +1,4 @@
-import { getContactData, saveContactData } from "../services/contact.service.js";
+import { getContactData, getIdByDeleteContact, saveContactData } from "../services/contact.service.js";
 
 export const getContactPage = async (req, res) => {
   try {
@@ -18,6 +18,19 @@ export const postContactPage = async (req, res) => {
     console.log("Contact Form", name, email, phone, message);
 
     await saveContactData({ name, email, phone, message });
+
+    return res.redirect("/contact");
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send("Internal server error");
+  }
+}
+
+export const deleteContactByIdPage = async (req, res) => {
+  try {
+    const id = req.params.id;
+    // console.log(id);
+    await getIdByDeleteContact(id);
 
     return res.redirect("/contact");
   } catch (error) {

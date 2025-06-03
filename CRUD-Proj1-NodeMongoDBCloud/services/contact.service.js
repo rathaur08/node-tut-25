@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import { dbClient } from "../config/db-client.js";
 
 const db = dbClient.db(process.env.MONGODB_DATABASE_NAME);
@@ -20,6 +21,7 @@ export const getIdByUpdateContact = async () => {
 
 }
 
-export const getIdByDeleteContact = async () => {
-  return contactCollection.findOneAndDelete({ id });
+export const getIdByDeleteContact = async (id) => {
+  // console.log("id: ", id);
+  return contactCollection.deleteOne({ _id: new ObjectId(id) });
 }

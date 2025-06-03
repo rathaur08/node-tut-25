@@ -44,8 +44,11 @@
       </tr>
     </thead>
     <tbody>
-      <% contactData.forEach(({ name, email, phone, message })=> { %>
+      <% contactData.forEach(({ _id, name, email, phone, message })=> { %>
         <tr>
+          <!-- <td>
+            <%= _id %>
+          </td> -->
           <td>
             <%= name %>
           </td>
@@ -60,7 +63,11 @@
           </td>
           <td>
             <button>Edit</button>
-            <button>Delete</button>
+            <form action="/contact/delete/<%= _id %>" method="post">
+              <button class="copy-btn edit-btn">
+                Delete
+              </button>
+            </form>
           </td>
         </tr>
         <% }) %>
