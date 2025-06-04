@@ -62,7 +62,9 @@
             <%= message %>
           </td>
           <td>
-            <button>Edit</button>
+            <button class="copy-btn edit-btn">
+              <a href="/contact/edit/<%= _id %>">Edit </a>
+            </button>
             <form action="/contact/delete/<%= _id %>" method="post">
               <button class="copy-btn edit-btn">
                 Delete

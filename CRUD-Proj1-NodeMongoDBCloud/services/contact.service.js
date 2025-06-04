@@ -14,11 +14,21 @@ export const getContactData = async () => {
 }
 
 export const getIdByContactData = async (id) => {
-  return contactCollection.findOne({ id });
+  return contactCollection.findOne({ _id: new ObjectId(id) });
 }
 
-export const getIdByUpdateContact = async () => {
-
+export const getIdByUpdateContact = async ({ id, name, email, phone, message }) => {
+  return contactCollection.updateOne(
+    { _id: new ObjectId(id) }, // Filter by _id (don't try to set it)
+    {
+      $set: {
+        name,
+        email,
+        phone,
+        message
+      }
+    }
+  );
 }
 
 export const getIdByDeleteContact = async (id) => {
