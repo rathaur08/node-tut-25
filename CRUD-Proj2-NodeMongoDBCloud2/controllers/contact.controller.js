@@ -14,7 +14,6 @@ export const postContactPage = async (req, res) => {
 
     console.log("Contact Form Data", req.body);
     const { name, email, phone, message } = req.body;
-    console.log("Contact Form", name, email, phone, message);
 
     await saveContactData({ name, email, phone, message });
 

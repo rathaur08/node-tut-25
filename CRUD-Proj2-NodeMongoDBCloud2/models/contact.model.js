@@ -1,5 +1,4 @@
 import { Schema, model } from "mongoose";
-import { dbClient } from "../config/db-client.js";
 
 const contactSchema = new Schema(
   {
