@@ -20,4 +20,9 @@ export const getIdByUpdateContact = async ({ id, name, email, phone, message }) 
 }
 
 export const getIdByDeleteContact = async (id) => {
+  const [result] = await db.execute(
+    'DELETE FROM contacts WHERE id = ?',
+    [id]
+  );
+  return result;
 }
