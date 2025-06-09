@@ -1,9 +1,15 @@
+import { db } from "../config/db-client.js";
 
-export const saveContactData = async (contactData) => {
-
+export const saveContactData = async ({ name, email, phone, message }) => {
+  const [rows] = await db.execute("insert into contacts( name, email, phone, message ) values(?,?,?,?)",
+    [name, email, phone, message]
+  )
+  return rows;
 };
 
 export const getContactData = async () => {
+  const [rows] = await db.execute("select * from contacts")
+  return rows;
 }
 
 export const getIdByContactData = async (id) => {

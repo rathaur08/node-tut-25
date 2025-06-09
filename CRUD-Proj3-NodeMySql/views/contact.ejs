@@ -44,7 +44,35 @@
       </tr>
     </thead>
     <tbody>
-      
+      <% contactData.forEach(({ id, name, email, phone, message })=> { %>
+        <tr>
+          <!-- <td>
+            <%= id %>
+          </td> -->
+          <td>
+            <%= name %>
+          </td>
+          <td>
+            <%= email %>
+          </td>
+          <td>
+            <%= phone %>
+          </td>
+          <td>
+            <%= message %>
+          </td>
+          <td>
+            <button class="copy-btn edit-btn">
+              <a href="/contact/edit/<%= id %>">Edit </a>
+            </button>
+            <form action="/contact/delete/<%= id %>" method="post">
+              <button class="copy-btn edit-btn">
+                Delete
+              </button>
+            </form>
+          </td>
+        </tr>
+        <% }) %>
     </tbody>
   </table>
 
