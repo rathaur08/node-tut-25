@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit-Contact page</title>
+</head>
+
+<body>
+  <h2> Edit Contact Page</h2>
+  <div class="w-50">
+    <form action="/contact/edit/<%= id %>" method="post" id="contact-form">
+      <div class="mb-3">
+        <label for="name" class="form-label">Full Name</label>
+        <input type="text" class="form-control" name="name" id="name" value="<%= name  %>" autocomplete="off">
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email address</label>
+        <input type="email" class="form-control" name="email" id="email" value="<%= email  %>" autocomplete="off">
+      </div>
+      <div class="mb-3">
+        <label for="phone" class="form-label">Number</label>
+        <input type="text" class="form-control" name="phone" id="phone" value="<%= phone  %>" autocomplete="off">
+      </div>
+      <div class="mb-3">
+        <label for="message" class="form-label">Your Message</label>
+        <!-- <input class="form-control" id="message" name="message" value="<%= message  %>" rows="2"
+          autocomplete="off"></input> -->
+        <textarea class="form-control" id="message" name="message" rows="2" autocomplete="off"><%= message %></textarea>
+
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+
+</body>
+
+</html>
