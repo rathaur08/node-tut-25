@@ -45,13 +45,12 @@ export const getEditContactPage = async (req, res) => {
   try {
     const id = req.params.id;
 
-    const [contact] = await getIdByContactData(id);
+    const contact = await getIdByContactData(id);
 
     if (!contact) {
       return res.status(404).send("Contact not found");
     }
-
-    console.log("getEditContactPage", contact);
+    // console.log("getEditContactPage", contact);
 
     res.render("editContact", {
       id: contact.id,
@@ -60,7 +59,6 @@ export const getEditContactPage = async (req, res) => {
       phone: contact.phone,
       message: contact.message
     });
-
 
   } catch (error) {
     console.error(error);

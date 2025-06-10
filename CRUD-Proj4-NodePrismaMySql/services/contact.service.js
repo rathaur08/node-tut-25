@@ -31,21 +31,28 @@ export const getIdByContactData = async (id) => {
   // );
   // return result;
 
-  // using Prisma get data in sql
+  // using Prisma get by id data in sql
   const rows = await prisma.Contact.findUnique({
-    where: { id },
+    where: { id: parseInt(id, 10) }
   })
   return rows;
 }
 
 export const getIdByUpdateContact = async ({ id, name, email, phone, message }) => {
-  const [result] = await db.execute(
-    `UPDATE contacts 
-     SET name = ?, email = ?, phone = ?, message = ? 
-     WHERE id = ?`,
-    [name, email, phone, message, id]
-  );
-  console.log("result.affectedRows", result.affectedRows);
+  // const [result] = await db.execute(
+  //   `UPDATE contacts 
+  //    SET name = ?, email = ?, phone = ?, message = ? 
+  //    WHERE id = ?`,
+  //   [name, email, phone, message, id]
+  // );
+  // console.log("result.affectedRows", result.affectedRows);
+  // return result;
+
+  // using Prisma Update by id data in sql
+  const result = await prisma.Contact.update({
+    where: { id: parseInt(id, 10) },
+    data: { name, email, phone, message },
+  })
   return result;
 }
 
