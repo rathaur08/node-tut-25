@@ -45,7 +45,7 @@ export const getEditContactPage = async (req, res) => {
   try {
     const id = req.params.id;
 
-    const [contact] = await getIdByContactData(id);
+    const contact = await getIdByContactData(id);
 
     if (!contact) {
       return res.status(404).send("Contact not found");

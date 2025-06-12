@@ -16,22 +16,20 @@ export const getContactData = async () => {
 }
 
 export const getIdByContactData = async (id) => {
-  // const [result] = await db.execute(
-  //   'SELECT * FROM contacts WHERE id = ?',
-  //   [id]
-  // );
-  // return result;
+
+  const [result] = await db.select().from(contactTable)
+    .where(eq(contactTable.id, id))
+  return result;
+
 }
 
 export const getIdByUpdateContact = async ({ id, name, email, phone, message }) => {
-  // const [result] = await db.execute(
-  //   `UPDATE contacts 
-  //    SET name = ?, email = ?, phone = ?, message = ? 
-  //    WHERE id = ?`,
-  //   [name, email, phone, message, id]
-  // );
-  // console.log("result.affectedRows", result.affectedRows);
-  // return result;
+
+  const [result] = await db.update(contactTable)
+    .set({ name, email, phone, message })
+    .where(eq(contactTable.id, id))
+  return result;
+
 }
 
 export const getIdByDeleteContact = async (id) => {
