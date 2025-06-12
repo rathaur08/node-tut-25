@@ -1,4 +1,5 @@
 import express from "express";
+import dotenv from "dotenv";
 import { ContactRoutes } from "./routes/contact.route.js";
 
 const app = express();
