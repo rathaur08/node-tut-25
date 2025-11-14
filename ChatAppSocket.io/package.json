@@ -1,0 +1,23 @@
+{
+  "name": "chatappsocket.io",
+  "version": "1.0.0",
+  "description": "Chat App using Socket.io",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Chat",
+    "app",
+    "Node",
+    "Socket.io"
+  ],
+  "author": "rathaur08",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "socket.io": "^4.8.1"
+  }
+}
